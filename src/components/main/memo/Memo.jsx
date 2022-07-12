@@ -100,13 +100,14 @@ const MemoElementLayout = styled.div`
     ${({ theme }) => {
         const { colors, fonts, margins, paddings } = theme;
         return css`
-            margin: ${margins.sm} 0vw;
-            padding: ${paddings.base} ${paddings.xl};
+            margin: ${margins.sm} auto;
+            padding: ${margins.sm};
 
             background-color: ${colors.blue.quinary};
             box-shadow: 0px 2px 1px ${colors.blue.tertiary};
 
             color: ${colors.blue.tertiary};
+            text-align: center;
 
             h5 {
                 font-size: ${fonts.size.sm};
