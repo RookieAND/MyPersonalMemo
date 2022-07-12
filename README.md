@@ -1,4 +1,4 @@
-# CovidKoreaStatus
+# MyPersonalMemo
 
 2022년도 두 번째 개인 React Toy Project
 
