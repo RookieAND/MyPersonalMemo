@@ -19,7 +19,7 @@ const MemoCategoryLayout = styled.div`
     ${({ theme }) => {
         const { colors, fonts, paddings, margins } = theme;
         return css`
-            width: 30%;
+            width: 25%;
             min-height: 70vh;
             padding: ${paddings.base};
             margin: 0vw ${margins.base};
