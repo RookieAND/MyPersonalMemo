@@ -13,21 +13,16 @@ const Navbar = () => {
 };
 
 const NavbarLayout = styled.ul`
-    ${({ theme }) => {
-        const { colors, fonts } = theme;
-        return css`
-            width: 50vw;
-            height: 3vw;
+    width: 50vw;
+    height: 3vw;
 
-            margin: 0vw auto;
+    margin: 0vw auto;
 
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-            text-align: center;
-        `;
-    }}
+    text-align: center;
 `;
 
 const LinkElement = styled(Link)`
