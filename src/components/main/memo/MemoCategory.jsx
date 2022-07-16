@@ -1,55 +1,104 @@
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
+import { useContext } from "react";
 
-import MemoElement from 'components/main/memo/MemoElement';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
-const MemoCategory = ({ category, memoList }) => {
-    return (
-        <MemoCategoryLayout>
-            <h5>{category}</h5>
-            <div className='list'>
-                {memoList.map((elm) => (
-                    <MemoElement key={elm.title} memo={elm} />
-                ))}
-            </div>
-        </MemoCategoryLayout>
-    );
+import { MemoDispatch } from "pages/Container/MemoContainer";
+import MemoElement from "components/main/memo/MemoElement";
+
+const MemoCategory = ({ category, memo }) => {
+	const dispatch = useContext(MemoDispatch);
+	const removeCategory = () => {
+		dispatch({
+			type: "REMOVE_CATEGORY",
+			category,
+		});
+	};
+
+	return (
+		<Wrapper>
+			<Title>
+				<h5>{category}</h5>
+			</Title>
+			<MemoList>
+				{memo.map((elm) => (
+					<MemoElement key={elm.id} memo={elm} />
+				))}
+			</MemoList>
+			<RemoveBtn onClick={removeCategory}>
+				<FontAwesomeIcon icon={faTrashCan} />
+			</RemoveBtn>
+		</Wrapper>
+	);
 };
 
-const MemoCategoryLayout = styled.div`
-    ${({ theme }) => {
-        const { colors, fonts, paddings, margins } = theme;
-        return css`
-            width: 25%;
-            min-height: 70vh;
-            padding: ${paddings.base};
-            margin: 0vw ${margins.base};
+const Wrapper = styled.div`
+	${({ theme }) => {
+		const { colors, margins } = theme;
+		return css`
+			width: 25%;
+			height: 100vh;
+			margin: 0vw ${margins.base};
 
-            background-color: ${colors.white};
+			background-color: ${colors.white};
+			color: ${colors.blue.secondary};
+		`;
+	}}
+`;
 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+const Title = styled.div`
+	${({ theme }) => {
+		const { colors, fonts, paddings, margins } = theme;
+		return css`
+			width: 100%;
+			height: 10%;
 
-            color: ${colors.blue.secondary};
+			padding: ${paddings.base};
 
-            & > h5 {
-                font-size: ${fonts.size.xl};
-                margin: ${margins.base} auto ${margins.xl} auto;
+			background-color: ${colors.blue.tertiary};
+			text-align: center;
 
-                &::after {
-                    content: '';
-                    width: ${fonts.size.xl};
-                }
-            }
+			h5 {
+				font-size: ${fonts.size.xl};
 
-            .list {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                align-items: flex-end;
-            }
-        `;
-    }}
+				color: ${colors.white};
+			}
+		`;
+	}}
+`;
+
+const MemoList = styled.div`
+	height: 80%;
+
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+`;
+
+const RemoveBtn = styled.div`
+	${({ theme }) => {
+		const { colors, fonts, paddings } = theme;
+		return css`
+			width: 100%;
+			height: 10%;
+
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			background-color: ${colors.blue.tertiary};
+			cursor: pointer;
+
+			text-align: center;
+			font-size: ${fonts.size.sm};
+			color: ${colors.white};
+
+			svg {
+				height: 40%;
+			}
+		`;
+	}}
 `;
 
 export default MemoCategory;
