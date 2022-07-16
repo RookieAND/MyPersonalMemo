@@ -2,7 +2,9 @@ import { useContext, useState } from "react";
 import styled, { css } from "styled-components";
 
 import { MemoDispatch } from "pages/Container/MemoContainer";
-import { faAlignCenter } from "@fortawesome/free-solid-svg-icons";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 const MemoElement = ({ memo, category }) => {
 	const [isActive, setActive] = useState(false);
@@ -30,8 +32,12 @@ const MemoElement = ({ memo, category }) => {
 				<p>{memo.desc}</p>
 			</MemoContent>
 			<MemoModify isActive={isActive}>
-				<button onClick={removeMemo}>삭제</button>
-				<button>수정</button>
+				<button onClick={removeMemo}>
+					<FontAwesomeIcon icon={faTrashCan} />
+				</button>
+				<button>
+					<FontAwesomeIcon icon={faPenToSquare} />
+				</button>
 			</MemoModify>
 		</Wrapper>
 	);
@@ -51,7 +57,7 @@ const MemoContent = styled.div`
 	${({ theme }) => {
 		const { colors, fonts, margins, paddings } = theme;
 		return css`
-			border-bottom: solid 2px ${colors.blue.quaternary};
+			border-bottom: solid 2px ${colors.blue.tertiary};
 
 			color: ${colors.blue.tertiary};
 			text-align: center;
@@ -74,17 +80,21 @@ const MemoModify = styled.div`
 	${({ theme, isActive }) => {
 		const { colors, fonts, margins, paddings } = theme;
 		return css`
-			display: ${isActive ? "flex" : "none"};
 			width: 100%;
-
 			margin: 0vw auto;
+
+			display: flex;
+			justify-content: space-between;
+
+			visibility: ${isActive ? "visible" : "hidden"};
 
 			button {
 				width: 50%;
 				padding: ${paddings.sm} 0vw;
 
-				background-color: ${colors.blue.quinary};
+				background-color: ${colors.blue.tertiary};
 				cursor: pointer;
+				color: ${colors.white};
 			}
 		`;
 	}}

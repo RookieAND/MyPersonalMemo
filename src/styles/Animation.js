@@ -1,10 +1,10 @@
-import { keyframes } from 'styled-components';
+import { keyframes } from "styled-components";
 
 export const raiseText = keyframes`
   0% {
-    opacity: 0;
+    visibility: hidden
   }
   100% {
-    opacity: 1;
+    visibility: visible;
   }
 `;
