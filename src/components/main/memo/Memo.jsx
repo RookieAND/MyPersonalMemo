@@ -63,7 +63,9 @@ const Memo = ({ mainMemo }) => {
 							<div className="button">
 								<button onClick={createCategory}>등록</button>
 								<button onClick={resetInput}>초기화</button>
-								<button onClick={toggleBtn}>취소</button>
+								<button onClick={toggleBtn} className="cancel">
+									취소
+								</button>
 							</div>
 						</div>
 					) : (
@@ -97,15 +99,15 @@ const Title = styled.div`
 				text-align: center;
 				font-weight: ${fonts.weight.bold};
 				font-size: ${fonts.size.xl};
-			}
 
-			h5::after {
-				content: "";
-				display: block;
+				&::after {
+					content: "";
+					display: block;
 
-				width: ${fonts.size.xl};
-				margin: 0.25vw auto 0.5vw auto;
-				border-bottom: 3px solid #141414;
+					width: ${fonts.size.xl};
+					margin: 0.25vw auto 0.5vw auto;
+					border-bottom: 3px solid #141414;
+				}
 			}
 
 			p {
@@ -146,7 +148,7 @@ const AddCategory = styled.div`
 				display: flex;
 				flex-direction: column;
 				justify-content: space-evenly;
-				aligh-item: center;
+				align-items: center;
 
 				p {
 					font-size: ${fonts.size.xsm};
@@ -161,10 +163,14 @@ const AddCategory = styled.div`
 					cursor: pointer;
 
 					color: ${colors.white};
+
+					&.cancel {
+						background: ${colors.red};
+					}
 				}
 
 				input {
-					width: 90%;
+					width: 100%;
 					padding: ${paddings.sm} 0vw;
 					margin: 0vw auto;
 

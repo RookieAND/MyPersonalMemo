@@ -1,7 +1,7 @@
 import BaseTemplate from "../components/template/BaseTemplate";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-import Home from "../components/main/home/Home";
+import { HomeContainer } from "./Container/HomeContainer";
 import { MemoContainer } from "./Container/MemoContainer";
 
 const MainPage = () => {
@@ -9,16 +9,12 @@ const MainPage = () => {
 		<BrowserRouter>
 			<BaseTemplate>
 				<Switch>
-					<Route exact path="/" component={HomeContainer}></Route>
-					<Route path="/memo" component={MemoContainer}></Route>
+					<Route exact path="/" component={HomeContainer} />
+					<Route path="/memo" component={MemoContainer} />
 				</Switch>
 			</BaseTemplate>
 		</BrowserRouter>
 	);
-};
-
-const HomeContainer = () => {
-	return <Home />;
 };
 
 export default MainPage;

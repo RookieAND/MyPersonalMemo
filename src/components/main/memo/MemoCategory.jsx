@@ -9,6 +9,7 @@ import MemoElement from "components/main/memo/MemoElement";
 
 const MemoCategory = ({ category, memo }) => {
 	const dispatch = useContext(MemoDispatch);
+
 	const removeCategory = () => {
 		dispatch({
 			type: "REMOVE_CATEGORY",
@@ -23,7 +24,7 @@ const MemoCategory = ({ category, memo }) => {
 			</Title>
 			<MemoList>
 				{memo.map((elm) => (
-					<MemoElement key={elm.id} memo={elm} />
+					<MemoElement key={elm.id} memo={elm} category={category} />
 				))}
 			</MemoList>
 			<RemoveBtn onClick={removeCategory}>
@@ -49,7 +50,7 @@ const Wrapper = styled.div`
 
 const Title = styled.div`
 	${({ theme }) => {
-		const { colors, fonts, paddings, margins } = theme;
+		const { colors, fonts, paddings } = theme;
 		return css`
 			width: 100%;
 			height: 10%;
@@ -70,6 +71,7 @@ const Title = styled.div`
 
 const MemoList = styled.div`
 	height: 80%;
+	padding: 5% 0%;
 
 	display: flex;
 	flex-direction: column;
@@ -78,7 +80,7 @@ const MemoList = styled.div`
 
 const RemoveBtn = styled.div`
 	${({ theme }) => {
-		const { colors, fonts, paddings } = theme;
+		const { colors, fonts } = theme;
 		return css`
 			width: 100%;
 			height: 10%;
