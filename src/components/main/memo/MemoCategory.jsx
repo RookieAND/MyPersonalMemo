@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	faFileCirclePlus,
+	faRotateBack,
 	faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -44,7 +45,7 @@ const MemoCategory = ({ category, memo }) => {
 	};
 
 	const toggleAddMemoSection = () => {
-		setAddMemo({ ...addMemo, isActive: true });
+		setAddMemo({ ...addMemo, isActive: !addMemo.isActive });
 	};
 
 	const changeAddMemoInput = (event) => {
@@ -85,6 +86,10 @@ const MemoCategory = ({ category, memo }) => {
 								onChange={changeAddMemoInput}
 							/>
 							<FontAwesomeIcon icon={faFileCirclePlus} onClick={createMemo} />
+							<FontAwesomeIcon
+								icon={faRotateBack}
+								onClick={toggleAddMemoSection}
+							/>
 						</div>
 					) : (
 						<FontAwesomeIcon
