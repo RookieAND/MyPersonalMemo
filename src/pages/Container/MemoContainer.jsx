@@ -18,7 +18,7 @@ const reducer = (state, action) => {
 				memoList.category === action.category
 					? {
 							...memoList,
-							memo: [...memoList.memo, ...action.newMemo],
+							memo: [...memoList.memo, action.newMemo],
 					  }
 					: memoList
 			);
@@ -33,6 +33,23 @@ const reducer = (state, action) => {
 					: memoList
 			);
 
+		case "MODIFY_MEMO":
+			return state.map((memoList) =>
+				memoList.category === action.category
+					? {
+							...memoList,
+							memo: memoList.memo.map((memo) =>
+								memo.id !== action.id
+									? {
+											title: action.title,
+											decs: action.desc,
+									  }
+									: memo
+							),
+					  }
+					: memoList
+			);
+
 		default:
 			return state;
 	}
@@ -40,26 +57,6 @@ const reducer = (state, action) => {
 
 export const MemoContainer = () => {
 	const [state, dispatch] = useReducer(reducer, ExampleMemo);
-
-	const createMemo = (category, title, desc, id) => {
-		dispatch({
-			type: "CREATE_MEMO",
-			category,
-			newMemo: {
-				title,
-				desc,
-				id,
-			},
-		});
-	};
-
-	const removeMemo = (category, id) => {
-		dispatch({
-			type: "REMOVE_MEMO",
-			category,
-			id,
-		});
-	};
 
 	return (
 		<MemoDispatch.Provider value={dispatch}>

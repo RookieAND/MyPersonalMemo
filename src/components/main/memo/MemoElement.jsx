@@ -31,13 +31,8 @@ const MemoElement = ({ memo, category }) => {
 				<h5>{memo.title}</h5>
 				<p>{memo.desc}</p>
 			</MemoContent>
-			<MemoModify isActive={isActive}>
-				<button onClick={removeMemo}>
-					<FontAwesomeIcon icon={faTrashCan} />
-				</button>
-				<button>
-					<FontAwesomeIcon icon={faPenToSquare} />
-				</button>
+			<MemoModify isActive={isActive} onClick={removeMemo}>
+				<FontAwesomeIcon icon={faTrashCan} />
 			</MemoModify>
 		</Wrapper>
 	);
@@ -57,7 +52,7 @@ const MemoContent = styled.div`
 	${({ theme }) => {
 		const { colors, fonts, margins, paddings } = theme;
 		return css`
-			border-bottom: solid 2px ${colors.blue.tertiary};
+			border-bottom: solid 1px ${colors.blue.tertiary};
 
 			color: ${colors.blue.tertiary};
 			text-align: center;
@@ -76,26 +71,18 @@ const MemoContent = styled.div`
 	}}
 `;
 
-const MemoModify = styled.div`
+const MemoModify = styled.button`
 	${({ theme, isActive }) => {
 		const { colors, fonts, margins, paddings } = theme;
 		return css`
 			width: 100%;
-			margin: 0vw auto;
+			padding: ${paddings.sm} 0vw;
 
-			display: flex;
-			justify-content: space-between;
+			display: ${isActive ? "block" : "none"};
 
-			visibility: ${isActive ? "visible" : "hidden"};
-
-			button {
-				width: 50%;
-				padding: ${paddings.sm} 0vw;
-
-				background-color: ${colors.blue.tertiary};
-				cursor: pointer;
-				color: ${colors.white};
-			}
+			background-color: ${colors.blue.tertiary};
+			cursor: pointer;
+			color: ${colors.white};
 		`;
 	}}
 `;
