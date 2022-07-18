@@ -131,7 +131,7 @@ const AddCategory = styled.div`
 
 			display: flex;
 			justify-content: center;
-			aligh-item: center;
+			align-items: center;
 
 			text-align: center;
 			color: ${colors.blue.secondary};

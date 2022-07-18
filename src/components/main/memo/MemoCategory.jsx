@@ -88,7 +88,7 @@ const MemoCategory = ({ category, memo }) => {
 							<FontAwesomeIcon icon={faFileCirclePlus} onClick={createMemo} />
 							<FontAwesomeIcon
 								icon={faRotateBack}
-								onClick={toggleAddMemoSection}
+								onClick={resetAddMemoInput}
 							/>
 						</div>
 					) : (
@@ -152,7 +152,7 @@ const MemoList = styled.div`
 
 const AddMemoSection = styled.div`
 	${({ theme }) => {
-		const { colors, fonts, paddings } = theme;
+		const { colors, fonts, paddings, margins } = theme;
 		return css`
 			width: 70%;
 			padding: ${paddings.sm} 0vw;
@@ -160,14 +160,27 @@ const AddMemoSection = styled.div`
 
 			background-color: ${colors.blue.secondary};
 
-			font-size: ${fonts.size.base};
+			font-size: ${fonts.size.xsm};
 			color: ${colors.white};
 			text-align: center;
 
 			.add-memo {
 				input {
 					width: 100%;
+					border: 0px;
+
+					color: ${colors.blue.primary};
+					font-size: ${fonts.size.sm};
 					text-align: center;
+
+					&::placeholder {
+						color: ${colors.blue.quinary};
+					}
+				}
+
+				svg {
+					margin: 0vw 12.5%;
+					padding-top: ${paddings.sm};
 				}
 			}
 		`;
