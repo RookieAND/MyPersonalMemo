@@ -39,12 +39,7 @@ const reducer = (state, action) => {
 					? {
 							...memoList,
 							memo: memoList.memo.map((memo) =>
-								memo.id !== action.id
-									? {
-											title: action.title,
-											decs: action.desc,
-									  }
-									: memo
+								memo.id === action.id ? action.modifiedMemo : memo
 							),
 					  }
 					: memoList

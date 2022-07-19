@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+	faCancel,
 	faFileCirclePlus,
 	faRotateBack,
 	faTrashCan,
@@ -14,8 +15,8 @@ import MemoElement from "components/main/memo/MemoElement";
 const MemoCategory = ({ category, memo }) => {
 	const dispatch = useContext(MemoDispatch);
 
+	const [isAddingMemo, setAddingMemo] = useState(false);
 	const [addMemo, setAddMemo] = useState({
-		isActive: false,
 		title: "",
 		desc: "",
 	});
@@ -40,22 +41,23 @@ const MemoCategory = ({ category, memo }) => {
 					id: 100,
 				},
 			});
-			resetAddMemoInput();
+			resetAddMemoContent();
+			setAddingMemo(false);
 		}
 	};
 
 	const toggleAddMemoSection = () => {
-		setAddMemo({ ...addMemo, isActive: !addMemo.isActive });
+		setAddingMemo((prev) => !prev);
+		resetAddMemoContent();
 	};
 
-	const changeAddMemoInput = (event) => {
+	const changeAddMemoContent = (event) => {
 		const { name, value } = event.target;
 		setAddMemo({ ...addMemo, [name]: value });
 	};
 
-	const resetAddMemoInput = () => {
+	const resetAddMemoContent = () => {
 		setAddMemo({
-			isActive: false,
 			title: "",
 			desc: "",
 		});
@@ -70,34 +72,44 @@ const MemoCategory = ({ category, memo }) => {
 				{memo.map((elm) => (
 					<MemoElement key={elm.id} memo={elm} category={category} />
 				))}
-				<AddMemoSection>
-					{addMemo.isActive ? (
-						<div className="add-memo">
-							<input
-								name="title"
-								placeholder="제목"
-								value={title}
-								onChange={changeAddMemoInput}
-							/>
-							<input
-								name="desc"
-								placeholder="설명"
-								value={desc}
-								onChange={changeAddMemoInput}
-							/>
-							<FontAwesomeIcon icon={faFileCirclePlus} onClick={createMemo} />
+				<AddMemoElement>
+					{isAddingMemo ? (
+						<>
+							<div className="add-memo">
+								<input
+									name="title"
+									value={title}
+									placeholder="추가할 메모 제목 입력"
+									onChange={changeAddMemoContent}
+								/>
+								<input
+									name="desc"
+									value={desc}
+									placeholder="추가할 메모 설명 입력"
+									onChange={changeAddMemoContent}
+								/>
+							</div>
+							<div className="sidebar">
+								<FontAwesomeIcon icon={faFileCirclePlus} onClick={createMemo} />
+								<FontAwesomeIcon
+									icon={faRotateBack}
+									onClick={resetAddMemoContent}
+								/>
+								<FontAwesomeIcon
+									icon={faCancel}
+									onClick={() => toggleAddMemoSection(false)}
+								/>
+							</div>
+						</>
+					) : (
+						<div className="sidebar">
 							<FontAwesomeIcon
-								icon={faRotateBack}
-								onClick={resetAddMemoInput}
+								icon={faFileCirclePlus}
+								onClick={() => toggleAddMemoSection(true)}
 							/>
 						</div>
-					) : (
-						<FontAwesomeIcon
-							icon={faFileCirclePlus}
-							onClick={toggleAddMemoSection}
-						/>
 					)}
-				</AddMemoSection>
+				</AddMemoElement>
 			</MemoList>
 			<RemoveCategoryBtn onClick={removeCategory}>
 				<FontAwesomeIcon icon={faTrashCan} />
@@ -150,37 +162,60 @@ const MemoList = styled.div`
 	align-items: flex-end;
 `;
 
-const AddMemoSection = styled.div`
+const AddMemoElement = styled.div`
 	${({ theme }) => {
-		const { colors, fonts, paddings, margins } = theme;
+		const { colors, fonts, paddings } = theme;
 		return css`
 			width: 70%;
-			padding: ${paddings.sm} 0vw;
 			margin: 0vw auto;
 
-			background-color: ${colors.blue.secondary};
-
-			font-size: ${fonts.size.xsm};
-			color: ${colors.white};
-			text-align: center;
-
 			.add-memo {
+				padding: ${paddings.sm} 0vw;
+				background-color: ${colors.blue.quinary};
+
+				display: flex;
+				flex-direction: column;
+				justify-content: space-evenly;
+
 				input {
 					width: 100%;
-					border: 0px;
+					border: 0;
 
-					color: ${colors.blue.primary};
-					font-size: ${fonts.size.sm};
+					background-color: ${colors.blue.quinary};
+					color: ${colors.blue.secondary};
 					text-align: center;
 
+					&[name="title"] {
+						font-size: ${fonts.size.sm};
+						padding-bottom: 0.25rem;
+					}
+
+					&[name="desc"] {
+						font-size: ${fonts.size.xsm};
+						font-weight: 100;
+					}
+
 					&::placeholder {
-						color: ${colors.blue.quinary};
+						color: ${colors.blue.secondary};
 					}
 				}
+			}
+
+			.sidebar {
+				width: 100%;
+				padding: ${paddings.sm} 0vw;
+
+				display: flex;
+				justify-content: space-between;
+
+				background-color: ${colors.blue.secondary};
+				cursor: pointer;
+
+				text-align: center;
+				color: ${colors.white};
 
 				svg {
-					margin: 0vw 12.5%;
-					padding-top: ${paddings.sm};
+					margin: auto;
 				}
 			}
 		`;
