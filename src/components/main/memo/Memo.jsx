@@ -59,18 +59,22 @@ const Memo = ({ mainMemo }) => {
 
 	// carousel 버튼 클릭 시 슬라이드가 넘어가게 하는 함수
 	const slideCarousel = (direction) => {
+		console.log(direction, currentSlide);
 		switch (direction) {
 			case "left":
 				if (currentSlide > 0) {
 					setCurrentSlide(currentSlide - 1);
-					return;
 				}
+				break;
 			case "right":
 				if (currentSlide < totalCategoryAmount - 1) {
 					setCurrentSlide(currentSlide + 1);
-					return;
 				}
+				break;
+			default:
+				return;
 		}
+		console.log(direction, currentSlide);
 	};
 
 	return (
