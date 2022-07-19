@@ -38,7 +38,6 @@ const MemoCategory = ({ category, memo }) => {
 				newMemo: {
 					title,
 					desc,
-					id: 100,
 				},
 			});
 			resetAddMemoContent();
@@ -122,9 +121,8 @@ const Wrapper = styled.div`
 	${({ theme }) => {
 		const { colors, margins } = theme;
 		return css`
-			width: 25%;
-			height: 100vh;
-			margin: 0vw ${margins.base};
+			width: 25vw;
+			height: 105vh;
 
 			background-color: ${colors.white};
 			color: ${colors.blue.secondary};
@@ -166,7 +164,7 @@ const AddMemoElement = styled.div`
 	${({ theme }) => {
 		const { colors, fonts, paddings } = theme;
 		return css`
-			width: 70%;
+			width: 80%;
 			margin: 0vw auto;
 
 			.add-memo {

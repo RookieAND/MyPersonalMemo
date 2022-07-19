@@ -19,7 +19,7 @@ const Header = () => {
 };
 
 const HeaderLayout = styled.header`
-	width: 100vw;
+	width: 100%;
 
 	margin: auto;
 	position: relative;
@@ -33,7 +33,7 @@ const HeaderBackground = styled.div`
 	${({ theme }) => {
 		const { colors, fonts, margins } = theme;
 		return css`
-			width: 100vw;
+			width: 100%;
 			height: 20vw;
 			min-height: 70vh;
 

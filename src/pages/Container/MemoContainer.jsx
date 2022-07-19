@@ -13,12 +13,19 @@ const reducer = (state, action) => {
 		case "REMOVE_CATEGORY":
 			return state.filter((memoList) => memoList.category !== action.category);
 
+		// id 를 발급하는 로직 : 가장 마지막에 위치한 ID + 1 [추후 리팩터링 예정]
 		case "CREATE_MEMO":
 			return state.map((memoList) =>
 				memoList.category === action.category
 					? {
 							...memoList,
-							memo: [...memoList.memo, action.newMemo],
+							memo: [
+								...memoList.memo,
+								{
+									...action.newMemo,
+									id: memoList.memo[memoList.memo.length - 1] + 1,
+								},
+							],
 					  }
 					: memoList
 			);

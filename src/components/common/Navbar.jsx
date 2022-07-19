@@ -1,58 +1,57 @@
-import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
+import styled, { css } from "styled-components";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
-    return (
-        <NavbarLayout>
-            <LinkElement to='/'>Main</LinkElement>
-            <LinkElement to='/'>Guide</LinkElement>
-            <LinkElement to='/'>Login</LinkElement>
-            <LinkElement to='/memo'>Memo</LinkElement>
-        </NavbarLayout>
-    );
+	return (
+		<NavbarLayout>
+			<LinkElement to="/">Main</LinkElement>
+			<LinkElement to="/">Login</LinkElement>
+			<LinkElement to="/memo">Memo</LinkElement>
+		</NavbarLayout>
+	);
 };
 
 const NavbarLayout = styled.ul`
-    width: 50vw;
-    height: 3vw;
+	width: 50vw;
+	height: 3vw;
 
-    margin: 0vw auto;
+	margin: 0vw auto;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 
-    text-align: center;
+	text-align: center;
 `;
 
 const LinkElement = styled(Link)`
-    ${({ theme }) => {
-        const { colors, fonts } = theme;
-        return css`
-            color: ${colors.blue.quinary};
-            font-family: ${fonts.family.detail};
-            font-size: ${fonts.size.sm};
+	${({ theme }) => {
+		const { colors, fonts } = theme;
+		return css`
+			color: ${colors.blue.quinary};
+			font-family: ${fonts.family.detail};
+			font-size: ${fonts.size.sm};
 
-            vertical-align: middle;
-            transform: 0.5s all cubic-bezier(0.21, 0.76, 0.81, 0.31);
+			vertical-align: middle;
+			transform: 0.5s all cubic-bezier(0.21, 0.76, 0.81, 0.31);
 
-            &:hover {
-                color: ${colors.blue.tertiary};
+			&:hover {
+				color: ${colors.blue.tertiary};
 
-                &::after {
-                    border-bottom: 2px solid ${colors.blue.tertiary};
-                }
-            }
+				&::after {
+					border-bottom: 2px solid ${colors.blue.tertiary};
+				}
+			}
 
-            &::after {
-                content: '';
-                display: block;
-                margin: auto;
-                border-bottom: 2px solid ${colors.blue.quinary};
-                width: ${fonts.size.sm};
-            }
-        `;
-    }}
+			&::after {
+				content: "";
+				display: block;
+				margin: auto;
+				border-bottom: 2px solid ${colors.blue.quinary};
+				width: ${fonts.size.sm};
+			}
+		`;
+	}}
 `;
 
 export default Navbar;

@@ -2,7 +2,11 @@ import styled, { css } from "styled-components";
 import { useState, useContext, useRef } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import {
+	faArrowLeft,
+	faArrowRight,
+	faCirclePlus,
+} from "@fortawesome/free-solid-svg-icons";
 
 import { MemoDispatch } from "pages/Container/MemoContainer";
 import MemoCategory from "components/main/memo/MemoCategory";
@@ -24,6 +28,7 @@ const Memo = ({ mainMemo }) => {
 				},
 			});
 			resetInput();
+			toggleBtn();
 		}
 		feedbackMsg.current.innerText = "이름은 3자 이상 입력해주세요.";
 	};
@@ -46,36 +51,42 @@ const Memo = ({ mainMemo }) => {
 				<h5>My Memo List</h5>
 				<p>나의 메모 목록</p>
 			</Title>
-			<MemoLayout>
-				{mainMemo.map(({ category, memo }) => (
-					<MemoCategory key={category} category={category} memo={memo} />
-				))}
-				<AddCategory>
-					{isActive ? (
-						<div className="form">
-							<h5>카테고리 추가</h5>
-							<input
-								placeholder="카테고리 이름 입력"
-								onChange={changeInput}
-								value={input}
-							/>
-							<p ref={feedbackMsg}>추가할 카테고리 이름을 입력해주세요.</p>
-							<div className="button">
-								<button onClick={createCategory}>등록</button>
-								<button onClick={resetInput}>초기화</button>
-								<button onClick={toggleBtn} className="cancel">
-									취소
-								</button>
-							</div>
-						</div>
-					) : (
-						<div className="text">
-							<h5>카테고리 추가</h5>
-							<FontAwesomeIcon icon={faCirclePlus} onClick={toggleBtn} />
-						</div>
-					)}
-				</AddCategory>
-			</MemoLayout>
+			<MemoList>
+				<MemoCarouselBtn icon={faArrowLeft} />
+				<MemoCarousel>
+					<MemoCategoryList memoAmount={mainMemo.length}>
+						{mainMemo.map(({ category, memo }) => (
+							<MemoCategory key={category} category={category} memo={memo} />
+						))}
+						<AddCategory>
+							{isActive ? (
+								<div className="form">
+									<h5>카테고리 추가</h5>
+									<input
+										placeholder="카테고리 이름 입력"
+										onChange={changeInput}
+										value={input}
+									/>
+									<p ref={feedbackMsg}>추가할 카테고리 이름을 입력해주세요.</p>
+									<div className="button">
+										<button onClick={createCategory}>등록</button>
+										<button onClick={resetInput}>초기화</button>
+										<button onClick={toggleBtn} className="cancel">
+											취소
+										</button>
+									</div>
+								</div>
+							) : (
+								<div className="text">
+									<h5>카테고리 추가</h5>
+									<FontAwesomeIcon icon={faCirclePlus} onClick={toggleBtn} />
+								</div>
+							)}
+						</AddCategory>
+					</MemoCategoryList>
+				</MemoCarousel>
+				<MemoCarouselBtn icon={faArrowRight} />
+			</MemoList>
 		</Wrapper>
 	);
 };
@@ -119,12 +130,44 @@ const Title = styled.div`
 	}}
 `;
 
+const MemoList = styled.div`
+	width: 100%;
+
+	display: flex;
+`;
+
+const MemoCategoryList = styled.div`
+	${({ theme, memoAmount }) => {
+		const { paddings } = theme;
+		return css`
+			width: ${`${25 * (memoAmount + 1) + 1.25 * memoAmount}vw`};
+			min-height: 90vh;
+			padding-bottom: ${paddings.xl};
+
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		`;
+	}}
+`;
+
+const MemoCarousel = styled.div`
+	width: 77.5%;
+	overflow: hidden;
+`;
+
+const MemoCarouselBtn = styled(FontAwesomeIcon)`
+	width: 11.25vw;
+	position: relative;
+	top: 0;
+`;
+
 const AddCategory = styled.div`
 	${({ theme }) => {
 		const { paddings, margins, fonts, colors } = theme;
 		return css`
-			width: 25%;
-			height: 100vh;
+			width: 25vw;
+			height: 105vh;
 
 			background-color: rgba(255, 255, 255, 0.25);
 			border: 4px dotted ${colors.blue.secondary};
@@ -197,20 +240,6 @@ const AddCategory = styled.div`
 				font-size: ${fonts.size.title};
 				cursor: pointer;
 			}
-		`;
-	}}
-`;
-
-const MemoLayout = styled.div`
-	${({ theme }) => {
-		const { paddings } = theme;
-		return css`
-			width: 100vw;
-			min-height: 90vh;
-			padding: ${paddings.xl};
-
-			display: flex;
-			align-items: center;
 		`;
 	}}
 `;

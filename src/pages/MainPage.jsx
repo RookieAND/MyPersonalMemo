@@ -11,6 +11,7 @@ const MainPage = () => {
 				<Switch>
 					<Route exact path="/" component={HomeContainer} />
 					<Route path="/memo" component={MemoContainer} />
+					<Route path="/login" component={MemoContainer} />
 				</Switch>
 			</BaseTemplate>
 		</BrowserRouter>

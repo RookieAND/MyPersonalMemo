@@ -130,7 +130,7 @@ const Wrapper = styled.div`
 	${({ theme }) => {
 		const { margins } = theme;
 		return css`
-			width: 70%;
+			width: 80%;
 			margin: ${margins.base} auto;
 		`;
 	}}
