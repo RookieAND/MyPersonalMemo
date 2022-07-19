@@ -1,10 +1,10 @@
 import styled, { css } from "styled-components";
-import { useState, useContext, useRef } from "react";
+import { useState, useContext, useRef, useEffect } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-	faArrowLeft,
-	faArrowRight,
+	faCircleChevronLeft,
+	faCircleChevronRight,
 	faCirclePlus,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -12,12 +12,28 @@ import { MemoDispatch } from "pages/Container/MemoContainer";
 import MemoCategory from "components/main/memo/MemoCategory";
 
 const Memo = ({ mainMemo }) => {
+	// Carousel 영역과 피드백 메세지 DOM 을 가리키는 Ref 선언.
+	const memoCarousel = useRef(null);
+	const feedbackMsg = useRef(null);
+
+	// 새로운 카테고리 추가와 관련된 state 선언.
 	const [isActive, setActive] = useState(false);
 	const [input, setInput] = useState("");
 
-	const dispatch = useContext(MemoDispatch);
-	const feedbackMsg = useRef();
+	// Memo Carousel 과 관련된 state 선언.
+	const totalCategoryAmount = mainMemo.length;
+	const [currentSlide, setCurrentSlide] = useState(0);
 
+	useEffect(() => {
+		memoCarousel.current.style.transition = "all 0.5s ease-in-out";
+		memoCarousel.current.style.transform = `translateX(-${
+			26.25 * currentSlide
+		}vw)`;
+	}, [currentSlide]);
+
+	const dispatch = useContext(MemoDispatch);
+
+	// 카테고리를 새롭게 생성하기 위한 함수.
 	const createCategory = () => {
 		if (input.length >= 3) {
 			dispatch({
@@ -28,7 +44,7 @@ const Memo = ({ mainMemo }) => {
 				},
 			});
 			resetInput();
-			toggleBtn();
+			setActive(false);
 		}
 		feedbackMsg.current.innerText = "이름은 3자 이상 입력해주세요.";
 	};
@@ -41,8 +57,20 @@ const Memo = ({ mainMemo }) => {
 		setInput("");
 	};
 
-	const toggleBtn = () => {
-		setActive((active) => !active);
+	// carousel 버튼 클릭 시 슬라이드가 넘어가게 하는 함수
+	const slideCarousel = (direction) => {
+		switch (direction) {
+			case "left":
+				if (currentSlide > 0) {
+					setCurrentSlide(currentSlide - 1);
+					return;
+				}
+			case "right":
+				if (currentSlide < totalCategoryAmount - 1) {
+					setCurrentSlide(currentSlide + 1);
+					return;
+				}
+		}
 	};
 
 	return (
@@ -52,9 +80,17 @@ const Memo = ({ mainMemo }) => {
 				<p>나의 메모 목록</p>
 			</Title>
 			<MemoList>
-				<MemoCarouselBtn icon={faArrowLeft} />
-				<MemoCarousel>
-					<MemoCategoryList memoAmount={mainMemo.length}>
+				<MemoCarouselBtn>
+					<FontAwesomeIcon
+						icon={faCircleChevronLeft}
+						onClick={() => slideCarousel("left")}
+					/>
+				</MemoCarouselBtn>
+				<div className="carousel">
+					<MemoCategoryList
+						totalCategoryAmount={totalCategoryAmount}
+						ref={memoCarousel}
+					>
 						{mainMemo.map(({ category, memo }) => (
 							<MemoCategory key={category} category={category} memo={memo} />
 						))}
@@ -71,7 +107,7 @@ const Memo = ({ mainMemo }) => {
 									<div className="button">
 										<button onClick={createCategory}>등록</button>
 										<button onClick={resetInput}>초기화</button>
-										<button onClick={toggleBtn} className="cancel">
+										<button onClick={() => setActive(false)} className="cancel">
 											취소
 										</button>
 									</div>
@@ -79,13 +115,21 @@ const Memo = ({ mainMemo }) => {
 							) : (
 								<div className="text">
 									<h5>카테고리 추가</h5>
-									<FontAwesomeIcon icon={faCirclePlus} onClick={toggleBtn} />
+									<FontAwesomeIcon
+										icon={faCirclePlus}
+										onClick={() => setActive(true)}
+									/>
 								</div>
 							)}
 						</AddCategory>
 					</MemoCategoryList>
-				</MemoCarousel>
-				<MemoCarouselBtn icon={faArrowRight} />
+				</div>
+				<MemoCarouselBtn>
+					<FontAwesomeIcon
+						icon={faCircleChevronRight}
+						onClick={() => slideCarousel("right")}
+					/>
+				</MemoCarouselBtn>
 			</MemoList>
 		</Wrapper>
 	);
@@ -134,13 +178,20 @@ const MemoList = styled.div`
 	width: 100%;
 
 	display: flex;
+
+	.carousel {
+		width: 80%;
+		overflow: hidden;
+	}
 `;
 
 const MemoCategoryList = styled.div`
-	${({ theme, memoAmount }) => {
+	${({ theme, totalCategoryAmount }) => {
 		const { paddings } = theme;
 		return css`
-			width: ${`${25 * (memoAmount + 1) + 1.25 * memoAmount}vw`};
+			width: ${`${
+				25 * (totalCategoryAmount + 1) + 1.25 * totalCategoryAmount
+			}vw`};
 			min-height: 90vh;
 			padding-bottom: ${paddings.xl};
 
@@ -151,15 +202,20 @@ const MemoCategoryList = styled.div`
 	}}
 `;
 
-const MemoCarousel = styled.div`
-	width: 77.5%;
-	overflow: hidden;
-`;
+const MemoCarouselBtn = styled.button`
+	${({ theme }) => {
+		const { fonts, colors } = theme;
+		return css`
+			width: 11.25vw;
+			background-color: transparent;
 
-const MemoCarouselBtn = styled(FontAwesomeIcon)`
-	width: 11.25vw;
-	position: relative;
-	top: 0;
+			position: relative;
+			top: 0;
+
+			color: ${colors.blue.secondary};
+			font-size: ${fonts.size.xl};
+		`;
+	}}
 `;
 
 const AddCategory = styled.div`

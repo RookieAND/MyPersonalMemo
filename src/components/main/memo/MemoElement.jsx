@@ -22,6 +22,7 @@ const MemoElement = ({ memo, category }) => {
 	const dispatch = useContext(MemoDispatch);
 
 	const removeMemo = () => {
+		console.log(memo);
 		dispatch({
 			type: "REMOVE_MEMO",
 			category,

@@ -68,9 +68,16 @@ const MemoCategory = ({ category, memo }) => {
 				<h5>{category}</h5>
 			</Title>
 			<MemoList>
-				{memo.map((elm) => (
-					<MemoElement key={elm.id} memo={elm} category={category} />
-				))}
+				{memo.length > 0 ? (
+					memo.map((elm) => (
+						<MemoElement key={elm.id} memo={elm} category={category} />
+					))
+				) : (
+					<div className="notice-empty">
+						<h5>등록된 메모 없음</h5>
+						<p>새로운 메모를 추가해보세요!</p>
+					</div>
+				)}
 				<AddMemoElement>
 					{isAddingMemo ? (
 						<>
@@ -119,7 +126,7 @@ const MemoCategory = ({ category, memo }) => {
 
 const Wrapper = styled.div`
 	${({ theme }) => {
-		const { colors, margins } = theme;
+		const { colors } = theme;
 		return css`
 			width: 25vw;
 			height: 105vh;
@@ -152,12 +159,30 @@ const Title = styled.div`
 `;
 
 const MemoList = styled.div`
-	height: 80%;
-	padding: 5% 0%;
+	${({ theme }) => {
+		const { fonts, margins } = theme;
+		return css`
+			height: 80%;
+			padding: 5% 0%;
 
-	display: flex;
-	flex-direction: column;
-	align-items: flex-end;
+			display: flex;
+			flex-direction: column;
+			align-items: flex-end;
+
+			.notice-empty {
+				margin: ${margins.xl} auto;
+				text-align: center;
+
+				h5 {
+					font-size: ${fonts.size.xl};
+				}
+
+				p {
+					font-size: ${fonts.size.sm};
+				}
+			}
+		`;
+	}}
 `;
 
 const AddMemoElement = styled.div`

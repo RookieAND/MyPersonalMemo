@@ -23,7 +23,10 @@ const reducer = (state, action) => {
 								...memoList.memo,
 								{
 									...action.newMemo,
-									id: memoList.memo[memoList.memo.length - 1] + 1,
+									id:
+										memoList.memo.length === 0
+											? 1
+											: memoList.memo[memoList.memo.length - 1].id + 1,
 								},
 							],
 					  }
