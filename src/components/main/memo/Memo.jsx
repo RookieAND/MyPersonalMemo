@@ -59,7 +59,6 @@ const Memo = ({ mainMemo }) => {
 
 	// carousel 버튼 클릭 시 슬라이드가 넘어가게 하는 함수
 	const slideCarousel = (direction) => {
-		console.log(direction, currentSlide);
 		switch (direction) {
 			case "left":
 				if (currentSlide > 0) {
@@ -74,7 +73,6 @@ const Memo = ({ mainMemo }) => {
 			default:
 				return;
 		}
-		console.log(direction, currentSlide);
 	};
 
 	return (
@@ -85,10 +83,12 @@ const Memo = ({ mainMemo }) => {
 			</Title>
 			<MemoList>
 				<MemoCarouselBtn>
-					<FontAwesomeIcon
-						icon={faCircleChevronLeft}
-						onClick={() => slideCarousel("left")}
-					/>
+					{currentSlide > 0 && (
+						<FontAwesomeIcon
+							icon={faCircleChevronLeft}
+							onClick={() => slideCarousel("left")}
+						/>
+					)}
 				</MemoCarouselBtn>
 				<div className="carousel">
 					<MemoCategoryList
@@ -129,10 +129,12 @@ const Memo = ({ mainMemo }) => {
 					</MemoCategoryList>
 				</div>
 				<MemoCarouselBtn>
-					<FontAwesomeIcon
-						icon={faCircleChevronRight}
-						onClick={() => slideCarousel("right")}
-					/>
+					{currentSlide < totalCategoryAmount - 1 && (
+						<FontAwesomeIcon
+							icon={faCircleChevronRight}
+							onClick={() => slideCarousel("right")}
+						/>
+					)}
 				</MemoCarouselBtn>
 			</MemoList>
 		</Wrapper>
