@@ -1,5 +1,5 @@
 import Login from 'components/main/login/Login';
 
-export const HomeContainer = () => {
+export const LoginContainer = () => {
     return <Login />;
 };
