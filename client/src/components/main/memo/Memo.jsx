@@ -7,6 +7,8 @@ import { faCircleChevronLeft, faCircleChevronRight, faCirclePlus } from '@fortaw
 import { MemoDispatch } from 'pages/Container/MemoContainer';
 import MemoCategory from 'components/main/memo/MemoCategory';
 
+import { shakeText } from 'styles/Animation';
+
 const Memo = ({ mainMemo }) => {
     // Carousel 영역과 피드백 메세지 DOM 을 가리키는 Ref 선언.
     const memoCarousel = useRef(null);
@@ -17,7 +19,7 @@ const Memo = ({ mainMemo }) => {
     const [input, setInput] = useState('');
 
     // Memo Carousel 과 관련된 state 선언.
-    const totalCategoryAmount = mainMemo.length;
+    const totalCategoryAmount = mainMemo?.length;
     const [currentSlide, setCurrentSlide] = useState(0);
 
     useEffect(() => {
@@ -31,12 +33,17 @@ const Memo = ({ mainMemo }) => {
     const createCategory = () => {
         // 입력 값의 길이가 3글자 이하일 경우를 체크하는 파트.
         if (input.length < 3) {
+            feedbackMsg.current.style.animation = `${shakeText} 1s;`;
             feedbackMsg.current.innerText = '이름은 3자 이상 입력해주세요.';
             return;
         }
 
         // mainMemo의 input 이름의 카테고리가 존재하는지를 체크하는 파트.
-        if (mainMemo.input ?? false) {
+        const categoryList = mainMemo.map((memoList) => memoList.category);
+        if (categoryList.includes(input)) {
+            feedbackMsg.current.style.animation = css`
+                ${shakeText}
+            `;
             feedbackMsg.current.innerText = '이미 존재하는 카테고리 입니다.';
             return;
         }
