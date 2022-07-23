@@ -9,14 +9,8 @@ const { Schema, model } = mongoose;
 
 // Author Schema : id, password, 가입 일자로 구성.
 const Author = new Schema({
-    id: {
-        type: String,
-        required: true,
-    },
-    password: {
-        type: String,
-        required: true,
-    },
+    id: String,
+    password: String,
     registed: {
         type: Date,
         default: Date.now,

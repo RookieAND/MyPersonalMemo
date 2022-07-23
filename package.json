@@ -1,28 +1,28 @@
 {
-  "name": "CovidKoreaStatus",
-  "version": "1.0.0",
-  "description": "CovidKoreaStatus Backend",
-  "main": "app.js",
-  "type": "module",
-  "scripts": {
-    "heroku-postbuild": "cd client && npm install && npm run build",
-    "start": "node app.js",
-    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
-    "dev:server": "npm start",
-    "dev:client": "cd client && npm start"
-  },
-  "author": "RookieAND_",
-  "license": "MIT",
-  "dependencies": {
-    "axios": "^0.27.2",
-    "concurrently": "^7.2.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.1",
-    "express": "^4.18.1",
-    "install": "^0.13.0",
-    "mongoose": "^6.4.6",
-    "nodemon": "^2.0.16",
-    "qs": "^6.10.5",
-    "xml-js": "^1.6.11"
-  }
+    "name": "MyPersonalMemo",
+    "version": "1.0.0",
+    "description": "MyPersonalMemo Backend",
+    "main": "app.js",
+    "type": "module",
+    "scripts": {
+        "heroku-postbuild": "cd client && npm install && npm run build",
+        "start": "node app.js",
+        "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+        "dev:server": "npm start",
+        "dev:client": "cd client && npm start"
+    },
+    "author": "RookieAND_",
+    "license": "MIT",
+    "dependencies": {
+        "axios": "^0.27.2",
+        "concurrently": "^7.2.2",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.1",
+        "express": "^4.18.1",
+        "install": "^0.13.0",
+        "mongoose": "^6.4.6",
+        "nodemon": "^2.0.16",
+        "qs": "^6.10.5",
+        "xml-js": "^1.6.11"
+    }
 }
