@@ -1,7 +1,28 @@
 import styled, { css } from 'styled-components';
+import { useState, useRef } from 'react';
+
 import Title from 'components/common/Title';
 
 const Login = () => {
+    const feedbackMsg = useRef();
+    const [loginInput, setLoginInput] = useState({
+        id: '',
+        pw: '',
+    });
+
+    const submitLogin = (event) => {
+        event.preventDefault();
+        const { id, pw } = loginInput;
+        if (id.length * pw.length === 0) {
+            feedbackMsg.current.innerText = 'ID 혹은 PW를 입력하지 않았습니다.';
+        }
+    };
+
+    const insertInput = (event) => {
+        const { name, value } = event.target;
+        setLoginInput({ ...loginInput, [name]: value });
+    };
+
     return (
         <Wrapper>
             <Title>
@@ -16,12 +37,14 @@ const Login = () => {
                 <LoginForm>
                     <div className='login-id'>
                         <label htmlFor='id'>Username</label>
-                        <input id='id' name='id' placeholder='ID를 입력해주세요.' />
+                        <input id='id' name='id' placeholder='ID를 입력해주세요.' onChange={insertInput} />
                     </div>
                     <div className='login-pw'>
                         <label htmlFor='pw'>Password</label>
-                        <input id='pw' name='id' placeholder='PW를 입력해주세요.' />
+                        <input id='pw' name='id' placeholder='PW를 입력해주세요.' onChange={insertInput} />
                     </div>
+                    <LoginFeedBack ref={feedbackMsg}>ID / PW 를 입력해주세요.</LoginFeedBack>
+                    <LoginBtn onClick={submitLogin}>Login</LoginBtn>
                 </LoginForm>
             </LoginSection>
         </Wrapper>
@@ -116,6 +139,37 @@ const LoginForm = styled.form`
             .login-pw {
                 margin: ${margins.base} auto;
             }
+        `;
+    }}
+`;
+
+const LoginFeedBack = styled.p`
+    ${({ theme }) => {
+        const { colors, fonts } = theme;
+        return css`
+            text-align: center;
+
+            color: ${colors.blue.secondary};
+            font-size: ${fonts.size.xsm};
+            font-weight: 100;
+        `;
+    }}
+`;
+
+const LoginBtn = styled.button`
+    ${({ theme }) => {
+        const { colors, fonts, margins, paddings } = theme;
+        return css`
+            width: 30%;
+            margin: ${margins.base} 0vw;
+            padding: ${paddings.sm} 0vw;
+
+            background-color: ${colors.blue.tertiary};
+            border-radius: 10px;
+
+            text-align: center;
+            color: ${colors.white};
+            font-size: ${fonts.size.base};
         `;
     }}
 `;
