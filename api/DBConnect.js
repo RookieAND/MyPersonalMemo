@@ -1,7 +1,8 @@
 import dotenv from 'dotenv';
 import express from 'express';
 
-import axiosInstance from './core/axiosInstance';
+import axiosInstance from './core/axiosInstance.js';
+import ControlDB from './ControlDB.js';
 
 dotenv.config({ encoding: 'utf8' });
 
@@ -15,13 +16,7 @@ const DBConnectRouter = express.Router();
 const getDatabase = async (request) => {
     let response;
     try {
-        response = await axiosInstance({
-            method: 'GET',
-            url: `/db_get`,
-            params: {
-                username: `${request.username}`,
-            },
-        });
+        response = await ControlDB.getUser(request.username);
     } catch (err) {
         console.log(err);
     }
