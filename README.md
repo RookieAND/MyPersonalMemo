@@ -1,45 +1,40 @@
-# CovidKoreaStatus
+# MyPersonalMemo
 
-2022년도 3학년 1학기 빅데이터기초 텀프로젝트.
+2022년도 두 번째 개인 React Toy Project
 
 ## Description [프로젝트 소개]
 
-React.js, Express 서버를 활용하여 국내 코로나 감염자 현황을 조회하고
-각 지역에 위치한 선별 진료소의 정보를 열람할 수 있는 사이트입니다.
-
-https://covidkoreastatus.herokuapp.com/ [현재 Heroku에서 서비스 중입니다.]
+React.js, Express 서버를 활용하여 계정 별 To-do List를 생성하고
+카테고리 별로 자신의 메모를 세부적으로 관리 가능한 웹 사이트입니다.
 
 ## Dependencies
 
--   javascript
--   React.js, Chart.js, styled-component
--   styled-component, Express, axios
+- javascript
+- React.js, styled-component, Redux
+- styled-component, Express, axios
 
 ## System [시스템 안내]
 
--   일주일 간의 국내 코로나 확진자 추이를 바 그래프로 열람할 수 있습니다.
--   서울, 경기, 충북 등 각 시도에 분포된 선별 진료소를 열람할 수 있습니다.
+- 개인 별로 작성한 메모를 DB에 저장하여 언제든지 불러올 수 있습니다.
+- 카테고리를 생성하여 작성한 메모들을 분류하여 세분화 시킬 수 있습니다.
 
 ## Authors [제작자]
 
--   RookieAND\_ (https://github.com/RookieAND)
+- RookieAND\_ (https://github.com/RookieAND)
 
 ## Version History
 
--   0.4
-    -   heroku 사이트 호스팅 완료.
-    -   최하단에 footer 섹션 추가.
-    -   모바일 레이아웃 설정 완료.
-    -   그래프 및 진료소 레이아웃 수정.
--   0.3
-    -   선별 진료소 페이지 버튼 추가.
-    -   진료소 설명에 전화번호를 추가.
-    -   그래프 양식을 Bar로 수정.
--   0.2
-    -   코로나 확진자 관련 차트 추가.
-    -   선별 진료소 API 통신 기능 추가.
--   0.1
-    -   Initial Release
+- 0.3
+  - 메모 별 내용 수정 기능 추가
+  - 메모 목록에 Carousel 레이아웃 도입.
+  - 메모 수정 관련 사이드바 디자인 수정
+- 0.2
+  - 라우팅을 통해 각 페이지를 세분화함.
+  - 카테고리 별 메모 보관 섹션 추가
+  - 카테고리 추가 생성 및 삭제 기능 추가
+  - 메모 별 수정 및 삭제 기능 추가
+- 0.1
+  - Initial Release
 
 ## License
 

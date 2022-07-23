@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 
-import { axiosInstance } from '../app.js';
+import axiosInstance from './core/axiosInstance';
 
 dotenv.config({ encoding: 'utf8' });
 
@@ -15,10 +15,11 @@ const DBConnectRouter = express.Router();
 const getDatabase = async (request) => {
     let response;
     try {
-        response = await axiosInstance.get({
-            url: `${BASE_URL}/db_get`,
+        response = await axiosInstance({
+            method: 'GET',
+            url: `/db_get`,
             params: {
-                serviceKey: decodeURIComponent(process.env.COVID_STATUS_SERVICE_KEY),
+                username: `${request.username}`,
             },
         });
     } catch (err) {

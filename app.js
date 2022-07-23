@@ -41,16 +41,8 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname + '/client/build/index.html'));
 });
 
-// HTTPS 통신에 쓰이는 Axios 인스턴스
-export const axiosInstance = axios.create({
-    baseURL: 'http://localhost:3000',
-    headers: { 'Content-Type': 'application/json' },
-    timeout: 1000,
-});
-
-// MongoDB Connection 관련 파트
-// useNewUrlParser, useCreateIndex, useUnifiedTopology 옵션 deprecated.
-// 6.0.0 부터는 자동으로 위 세 옵션이 적용됨.
+// MongoDB Connection 관련 파트. (Cluster URL의 경우 환경변수 파일에 저장)
+// 6.0.0 부터는 자동으로 useNewUrlParser, useCreateIndex, useUnifiedTopology 옵션이 적용됨.
 mongoose.connect(process.env.ATLAS_URL);
 
 const DBconnection = mongoose.connection;
