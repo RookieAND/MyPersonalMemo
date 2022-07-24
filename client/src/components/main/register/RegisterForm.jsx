@@ -2,50 +2,50 @@ import styled, { css } from 'styled-components';
 import { useState, useRef } from 'react';
 
 import { sendLoginInfo } from 'api/sendLoginInfo.js';
-import { loginFailFeedbackMsg } from 'constants/LoginFailFeedback';
+import { regFailFeedbackMsg } from 'constants/RegFailFeedback';
 
-const LoginForm = () => {
+const RegisterForm = () => {
     const feedbackMsg = useRef();
-    const [loginInput, setLoginInput] = useState({
+    const [registerInput, setRegisterInput] = useState({
         id: '',
         pw: '',
     });
 
-    const submitLogin = async (event) => {
+    const submitRegister = async (event) => {
         event.preventDefault();
-        const { id, pw } = loginInput;
+        const { id, pw } = registerInput;
 
         // ID 혹은 PW 둘 중 하나라도 입력하지 않았다면, 에러 메세지 출력
         if (id.length * pw.length === 0) {
-            feedbackMsg.current.innerText = loginFailFeedbackMsg['002'];
+            feedbackMsg.current.innerText = regFailFeedbackMsg['002'];
             return;
         }
         const response = await sendLoginInfo(id, pw);
 
         // 만약 입력한 계정 정보가 존재하지 않는다면, 에러 메세지 출력
         if (response.status === 'fail') {
-            feedbackMsg.current.innerText = loginFailFeedbackMsg['001'];
+            feedbackMsg.current.innerText = regFailFeedbackMsg['001'];
             return;
         }
     };
 
     const insertInput = (event) => {
         const { name, value } = event.target;
-        setLoginInput({ ...loginInput, [name]: value });
+        setRegisterInput({ ...registerInput, [name]: value });
     };
 
     return (
         <Wrapper>
-            <LoginInput name='login-id'>
+            <RegisterInput name='login-id'>
                 <label htmlFor='id'>Username</label>
                 <input id='id' name='id' placeholder='ID를 입력해주세요.' onChange={insertInput} />
-            </LoginInput>
-            <LoginInput name='login-id'>
+            </RegisterInput>
+            <RegisterInput name='login-id'>
                 <label htmlFor='pw'>Password</label>
                 <input id='pw' name='pw' placeholder='PW를 입력해주세요.' onChange={insertInput} />
-            </LoginInput>
-            <LoginFeedBack ref={feedbackMsg}>ID / PW 를 입력해주세요.</LoginFeedBack>
-            <LoginBtn onClick={submitLogin}>Login</LoginBtn>
+            </RegisterInput>
+            <RegisterFeedBack ref={feedbackMsg}>ID / PW 를 입력해주세요.</RegisterFeedBack>
+            <RegisterBtn onClick={submitRegister}>Login</RegisterBtn>
         </Wrapper>
     );
 };
@@ -65,7 +65,7 @@ const Wrapper = styled.form`
     }}
 `;
 
-const LoginInput = styled.div`
+const RegisterInput = styled.div`
     ${({ theme }) => {
         const { colors, fonts, margins } = theme;
         return css`
@@ -96,7 +96,7 @@ const LoginInput = styled.div`
         `;
     }}
 `;
-const LoginFeedBack = styled.p`
+const RegisterFeedBack = styled.p`
     ${({ theme }) => {
         const { colors, fonts } = theme;
         return css`
@@ -109,7 +109,7 @@ const LoginFeedBack = styled.p`
     }}
 `;
 
-const LoginBtn = styled.button`
+const RegisterBtn = styled.button`
     ${({ theme }) => {
         const { colors, fonts, margins, paddings } = theme;
         return css`
@@ -127,4 +127,4 @@ const LoginBtn = styled.button`
     }}
 `;
 
-export default LoginForm;
+export default RegisterForm;
