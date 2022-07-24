@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
 import DBRouter from './api/DBRouter.js';
+import AccountRouter from './api/AccountRouter.js';
 
 // import covidStatusRouter from './api/covidStatus.js';
 // import traigeRouter from './api/traigeRoom.js';
@@ -21,7 +22,7 @@ const __dirname = path.dirname(__filename);
 
 // 기본 port를 app Express 객체에 설정하는 과정
 app.listen(port, () => {
-    console.log(`Example Express server with ${port}`);
+    console.log(`Express 서버 정상 가동 중, 포트 ${port} 번`);
 });
 
 // CORS Header를 추가하여 CORS 통신을 가능하게 한다.
@@ -31,7 +32,8 @@ app.use(cors());
 app.use(express.json());
 
 // Router를 통해 DB API를 분리시켜 관리함.
-app.get('/memo', DBRouter);
+app.use('/memo', DBRouter);
+app.use('/account', AccountRouter);
 
 // 리액트로 build 된 static files 제공
 app.use(express.static(path.join(__dirname, 'client/build')));
@@ -47,5 +49,5 @@ mongoose.connect(`${process.env.ATLAS_URL}`);
 
 const DBconnection = mongoose.connection;
 DBconnection.once('open', () => {
-    console.log('MongoDB connect has been completed.');
+    console.log('MongoDB 클러스터와의 연결이 성공적으로 완료되었습니다.');
 });
