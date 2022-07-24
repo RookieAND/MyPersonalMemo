@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import { useState, useRef } from 'react';
 
 import { sendLoginInfo } from 'api/sendLoginInfo.js';
+import { loginFailFeedbackMsg } from 'constants/LoginFailFeedback';
 
 const LoginForm = () => {
     const feedbackMsg = useRef();
@@ -10,17 +11,21 @@ const LoginForm = () => {
         pw: '',
     });
 
-    const submitLogin = (event) => {
+    const submitLogin = async (event) => {
         event.preventDefault();
         const { id, pw } = loginInput;
 
         // ID 혹은 PW 둘 중 하나라도 입력하지 않았다면
-        console.log(id.length, pw.length);
         if (id.length * pw.length === 0) {
-            feedbackMsg.current.innerText = 'ID 혹은 PW를 입력하지 않았습니다.';
+            feedbackMsg.current.innerText = loginFailFeedbackMsg['002'];
             return;
         }
-        sendLoginInfo(id, pw);
+        const response = await sendLoginInfo(id, pw);
+        console.log(response);
+        if (response.status === 'fail') {
+            feedbackMsg.current.innerText = loginFailFeedbackMsg['001'];
+            return;
+        }
     };
 
     const insertInput = (event) => {

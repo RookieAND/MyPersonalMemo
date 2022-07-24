@@ -7,6 +7,7 @@
     "scripts": {
         "heroku-postbuild": "cd client && npm install && npm run build",
         "start": "node app.js",
+        "test": "nodemon app.js",
         "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
         "dev:server": "npm start",
         "dev:client": "cd client && npm start"
@@ -21,7 +22,7 @@
         "express": "^4.18.1",
         "install": "^0.13.0",
         "mongoose": "^6.4.6",
-        "nodemon": "^2.0.16",
+        "nodemon": "^2.0.19",
         "qs": "^6.10.5",
         "xml-js": "^1.6.11"
     }

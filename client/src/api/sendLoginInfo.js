@@ -1,11 +1,12 @@
 import axiosInstance from 'api/axiosInstance';
+import axios from 'axios';
 
 export const sendLoginInfo = async (userID, userPW) => {
     let response;
     try {
-        response = await axiosInstance({
+        response = await axios({
             method: 'POST',
-            url: '/account/login',
+            url: 'http://localhost:5000/account/login',
             data: {
                 userID,
                 userPW,

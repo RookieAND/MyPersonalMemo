@@ -25,7 +25,8 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
     // 응답 성공 시 response.data를 return 하도록 설정.
     (response) => {
-        return response.data;
+        const res = response.data;
+        return res;
     },
     (error) => {
         console.log(error);
