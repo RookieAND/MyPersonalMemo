@@ -3,19 +3,26 @@ import { authorModel } from '../model/authorSchema.js';
 
 // MongoDB 에서 요구하는 작업을 이곳에서 수행.
 export const ControlAccount = {
-    // 회원가입 관련 함수
+    // 회원가입 관련 함수 (유저, 메모 계정 생성)
     register: async (req, res) => {
         const { userID, userPW } = req.body;
+        // 먼저, 기존의 계정이 존재하는지를 체크해야 함.
+        const userData = await authorModel.findOne({ id: userID, password: userPW });
+        if (userData) {
+            return res.json({ result: 'failure', errcode: '001' });
+        }
         try {
-            await authorModel.create({ id: userID, password: userPW });
-            await memoModel.create({
-                author: newAuthor,
+            const newAuthor = new authorModel({ id: userID, password: userPW });
+            await newAuthor.save();
+            const newMemo = new memoModel({
                 categories: [],
             });
-            return res.status(200).json({ status: 'success' });
+            newMemo.author = newAuthor;
+            await newMemo.save();
+            return res.json({ result: 'success' });
             // 기존의 계정 정보가 없을 경우, MongoDB에 새로운 계정 정보를 추가함.
         } catch (error) {
-            return res.status(500).json({ status: 'fail', errcode: '003' });
+            return res.json({ result: 'failure', errcode: '003' });
         }
     },
     // 로그인 관련 함수
@@ -29,9 +36,8 @@ export const ControlAccount = {
         }
         // 만약 계정 정보가 존재하지 않을 경우 (null) 에러 코드 전송;
         if (!userDocs) {
-            console.log('계정 정보 없음');
-            return res.json({ status: 'fail' });
+            return res.json({ status: 'fail', errcode: '001' });
         }
-        return res.json({ ...userDocs, status: 'success' });
+        return res.json({ status: 'success' });
     },
 };

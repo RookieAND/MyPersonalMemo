@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { useState, useRef } from 'react';
 
 import { registerAccount } from 'api/registerAccount';
-import { regFailFeedbackMsg } from 'constants/RegFailFeedback';
+import { RegisterFeedbackMsg } from 'constants/RegisterFeedbackMsg';
 
 const RegisterForm = () => {
     const feedbackMsg = useRef();
@@ -17,21 +17,25 @@ const RegisterForm = () => {
 
         // ID 혹은 PW 둘 중 하나라도 입력하지 않았다면, 에러 메세지 출력
         if (id.length * pw.length === 0) {
-            feedbackMsg.current.innerText = regFailFeedbackMsg['002'];
+            feedbackMsg.current.innerText = RegisterFeedbackMsg['002'];
             resetInput();
             return;
         }
-
-        const response = await registerAccount(id, pw);
 
         // 만약 입력한 계정 정보가 존재하지 않는다면, 에러 메세지 출력
-        if (response.status === 'fail') {
-            feedbackMsg.current.innerText = regFailFeedbackMsg[response.errcode];
-            resetInput();
+        let res;
+        try {
+            res = await registerAccount(id, pw);
+        } catch (err) {
+            throw new Error(err);
+        }
+
+        if (res.result === 'failure') {
+            feedbackMsg.current.innerText = RegisterFeedbackMsg[res.errcode];
             return;
         }
+
         // 최종적으로 로그인에 성공했다면, 로그인 페이지로 유저를 이동시켜야 함.
-        // window.location = '/login';
         feedbackMsg.current.innerText = '정상적으로 가입 처리가 완료되었습니다.';
         resetInput();
     };

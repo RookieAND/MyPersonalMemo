@@ -12,10 +12,10 @@ const Author = new Schema({
     password: {
         type: String,
         required: true,
-        uinque: true,
     },
     registed: {
         type: Date,
+        required: true,
         default: Date.now,
     },
 });

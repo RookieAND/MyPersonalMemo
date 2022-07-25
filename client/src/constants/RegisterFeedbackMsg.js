@@ -1,4 +1,4 @@
-export const regFailFeedbackMsg = {
+export const RegisterFeedbackMsg = {
     '000': '등록하실 ID와 PW를 입력해주세요',
     '001': '입력하신 계정 정보는 이미 존재합니다.',
     '002': 'ID 혹은 PW를 입력하지 않았습니다.',

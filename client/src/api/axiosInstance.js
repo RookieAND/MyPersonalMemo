@@ -28,6 +28,7 @@ axiosInstance.interceptors.response.use(
         const res = response.data;
         return res;
     },
+    // 응답 실패 시 Promise Error 객체를 return 하도록 설정.
     (error) => {
         console.log(error);
         return Promise.reject(error);
