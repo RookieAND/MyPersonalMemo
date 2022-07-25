@@ -1,4 +1,5 @@
 import { memoModel } from '../model/memoSchema.js';
+import { authorModel } from '../model/authorSchema.js';
 
 // MongoDB 에서 요구하는 작업을 이곳에서 수행.
 export const ControlAccount = {
@@ -6,8 +7,9 @@ export const ControlAccount = {
     register: async (req, res) => {
         const { userID, userPW } = req.body;
         try {
+            await authorModel.create({ id: userID, password: userPW });
             await memoModel.create({
-                author: { id: userID, password: userPW },
+                author: newAuthor,
                 categories: [],
             });
             return res.status(200).json({ status: 'success' });
