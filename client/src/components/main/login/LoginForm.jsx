@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { useState, useRef } from 'react';
 
 import { sendLoginInfo } from 'api/sendLoginInfo.js';
-import { LoginFeedBackMsg } from 'constants/LoginFeedbackMsg';
+import { LoginFeedbackMsg } from 'constants/LoginFeedbackMsg';
 
 const LoginForm = () => {
     const feedbackMsg = useRef();
@@ -17,14 +17,14 @@ const LoginForm = () => {
 
         // ID 혹은 PW 둘 중 하나라도 입력하지 않았다면, 에러 메세지 출력
         if (id.length * pw.length === 0) {
-            feedbackMsg.current.innerText = LoginFeedBackMsg['002'];
+            feedbackMsg.current.innerText = LoginFeedbackMsg['002'];
             return;
         }
         const res = await sendLoginInfo(id, pw);
 
         // 만약 입력한 계정 정보가 존재하지 않는다면, 에러 메세지 출력
         if (res.status === 'fail') {
-            feedbackMsg.current.innerText = LoginFeedBackMsg[res.errcode];
+            feedbackMsg.current.innerText = LoginFeedbackMsg[res.errcode];
             return;
         }
     };

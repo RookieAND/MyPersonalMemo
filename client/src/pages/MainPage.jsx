@@ -1,5 +1,5 @@
 import BaseTemplate from '../components/template/BaseTemplate';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { HomeContainer } from './Container/HomeContainer';
 import { MemoContainer } from './Container/MemoContainer';
@@ -10,12 +10,12 @@ const MainPage = () => {
     return (
         <BrowserRouter>
             <BaseTemplate>
-                <Switch>
-                    <Route exact path='/' component={HomeContainer} />
-                    <Route path='/memo' component={MemoContainer} />
-                    <Route path='/login' component={LoginContainer} />
-                    <Route path='/register' component={RegisterContainer} />
-                </Switch>
+                <Routes>
+                    <Route path='/' element={<HomeContainer />} />
+                    <Route path='/memo/*' element={<MemoContainer />} />
+                    <Route path='/login' element={<LoginContainer />} />
+                    <Route path='/register' element={<RegisterContainer />} />
+                </Routes>
             </BaseTemplate>
         </BrowserRouter>
     );

@@ -71,7 +71,7 @@ const RegisterForm = () => {
                     value={registerInput.pw}
                 />
             </RegisterInput>
-            <RegisterFeedBack ref={feedbackMsg}>{regFailFeedbackMsg['000']}</RegisterFeedBack>
+            <RegisterFeedBack ref={feedbackMsg}>{RegisterFeedbackMsg['000']}</RegisterFeedBack>
             <RegisterBtn onClick={submitRegister}>Sign up</RegisterBtn>
         </Wrapper>
     );
