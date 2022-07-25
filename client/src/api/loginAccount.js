@@ -1,6 +1,6 @@
 import axiosInstance from 'api/axiosInstance';
 
-export const sendLoginInfo = async (userID, userPW) => {
+export const loginAccount = async (userID, userPW) => {
     let response;
     try {
         response = await axiosInstance({

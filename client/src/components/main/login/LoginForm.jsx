@@ -1,7 +1,8 @@
 import styled, { css } from 'styled-components';
 import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { sendLoginInfo } from 'api/sendLoginInfo.js';
+import { loginAccount } from 'api/loginAccount.js';
 import { LoginFeedbackMsg } from 'constants/LoginFeedbackMsg';
 
 const LoginForm = () => {
@@ -10,6 +11,7 @@ const LoginForm = () => {
         id: '',
         pw: '',
     });
+    const navigate = useNavigate();
 
     const submitLogin = async (event) => {
         event.preventDefault();
@@ -20,13 +22,17 @@ const LoginForm = () => {
             feedbackMsg.current.innerText = LoginFeedbackMsg['002'];
             return;
         }
-        const res = await sendLoginInfo(id, pw);
+        const res = await loginAccount(id, pw);
 
         // 만약 입력한 계정 정보가 존재하지 않는다면, 에러 메세지 출력
         if (res.status === 'fail') {
             feedbackMsg.current.innerText = LoginFeedbackMsg[res.errcode];
             return;
         }
+
+        // 로그인에 성공했다면, 성공 메세지를 띄우고 0.75초 후 메인 화면으로 이동.
+        feedbackMsg.current.innerText = LoginFeedbackMsg['000'];
+        setTimeout(() => navigate('/'), 750);
     };
 
     const insertInput = (event) => {

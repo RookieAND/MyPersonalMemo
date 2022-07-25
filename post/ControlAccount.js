@@ -30,7 +30,7 @@ export const ControlAccount = {
         let userDocs;
         const { userID, userPW } = req.body;
         try {
-            userDocs = await memoModel.findOne({ author: { id: userID, pw: userPW } });
+            userDocs = await authorModel.findOne({ id: userID, pw: userPW });
         } catch (error) {
             throw new Error(error);
         }
