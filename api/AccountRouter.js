@@ -13,5 +13,6 @@ const AccountRouter = express.Router();
 
 // 특정 User에 대한 정보를 가져오고 싶을 경우 사용.
 AccountRouter.post('/login', ControlAccount.login);
+AccountRouter.post('/register', ControlAccount.register);
 
 export default AccountRouter;

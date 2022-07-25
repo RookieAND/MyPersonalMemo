@@ -7,8 +7,8 @@ const Register = () => {
     return (
         <Wrapper>
             <Title>
-                <h5>Login Account</h5>
-                <p>나의 메모 계정 로그인</p>
+                <h5>Register Account</h5>
+                <p>나만의 메모 회원 가입</p>
             </Title>
             <RegisterSection>
                 <RegisterInformation>

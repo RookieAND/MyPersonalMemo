@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { useState, useRef } from 'react';
 
-import { sendLoginInfo } from 'api/sendLoginInfo.js';
+import { registerAccount } from 'api/registerAccount';
 import { regFailFeedbackMsg } from 'constants/RegFailFeedback';
 
 const RegisterForm = () => {
@@ -18,15 +18,22 @@ const RegisterForm = () => {
         // ID 혹은 PW 둘 중 하나라도 입력하지 않았다면, 에러 메세지 출력
         if (id.length * pw.length === 0) {
             feedbackMsg.current.innerText = regFailFeedbackMsg['002'];
+            resetInput();
             return;
         }
-        const response = await sendLoginInfo(id, pw);
+
+        const response = await registerAccount(id, pw);
 
         // 만약 입력한 계정 정보가 존재하지 않는다면, 에러 메세지 출력
         if (response.status === 'fail') {
-            feedbackMsg.current.innerText = regFailFeedbackMsg['001'];
+            feedbackMsg.current.innerText = regFailFeedbackMsg[response.errcode];
+            resetInput();
             return;
         }
+        // 최종적으로 로그인에 성공했다면, 로그인 페이지로 유저를 이동시켜야 함.
+        // window.location = '/login';
+        feedbackMsg.current.innerText = '정상적으로 가입 처리가 완료되었습니다.';
+        resetInput();
     };
 
     const insertInput = (event) => {
@@ -34,18 +41,34 @@ const RegisterForm = () => {
         setRegisterInput({ ...registerInput, [name]: value });
     };
 
+    const resetInput = () => {
+        setRegisterInput({ id: '', pw: '' });
+    };
+
     return (
         <Wrapper>
             <RegisterInput name='login-id'>
                 <label htmlFor='id'>Username</label>
-                <input id='id' name='id' placeholder='ID를 입력해주세요.' onChange={insertInput} />
+                <input
+                    id='id'
+                    name='id'
+                    placeholder='등록할 ID를 입력해주세요.'
+                    onChange={insertInput}
+                    value={registerInput.id}
+                />
             </RegisterInput>
             <RegisterInput name='login-id'>
                 <label htmlFor='pw'>Password</label>
-                <input id='pw' name='pw' placeholder='PW를 입력해주세요.' onChange={insertInput} />
+                <input
+                    id='pw'
+                    name='pw'
+                    placeholder='등록할 PW를 입력해주세요.'
+                    onChange={insertInput}
+                    value={registerInput.pw}
+                />
             </RegisterInput>
-            <RegisterFeedBack ref={feedbackMsg}>ID / PW 를 입력해주세요.</RegisterFeedBack>
-            <RegisterBtn onClick={submitRegister}>Login</RegisterBtn>
+            <RegisterFeedBack ref={feedbackMsg}>{regFailFeedbackMsg['000']}</RegisterFeedBack>
+            <RegisterBtn onClick={submitRegister}>Sign up</RegisterBtn>
         </Wrapper>
     );
 };

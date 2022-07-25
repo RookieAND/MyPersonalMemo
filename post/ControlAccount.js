@@ -2,19 +2,22 @@ import { memoModel } from '../model/memoSchema.js';
 
 // MongoDB 에서 요구하는 작업을 이곳에서 수행.
 export const ControlAccount = {
-    create: async function (req, res) {
+    // 회원가입 관련 함수
+    register: async (req, res) => {
+        const { userID, userPW } = req.body;
         try {
-            const { userID, userPW } = req.body;
-            const post = await memoModel.create({
+            await memoModel.create({
                 author: { id: userID, password: userPW },
                 categories: [],
             });
-            res.redirect(`/memo/${post._id}`);
+            return res.status(200).json({ status: 'success' });
+            // 기존의 계정 정보가 없을 경우, MongoDB에 새로운 계정 정보를 추가함.
         } catch (error) {
-            res.status(400).send({ error: error.message });
+            return res.status(500).json({ status: 'fail', errcode: '003' });
         }
     },
-    login: async function (req, res) {
+    // 로그인 관련 함수
+    login: async (req, res) => {
         let userDocs;
         const { userID, userPW } = req.body;
         try {

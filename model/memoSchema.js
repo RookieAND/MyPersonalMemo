@@ -9,8 +9,16 @@ const { Schema, model } = mongoose;
 
 // Author Schema : id, password, 가입 일자로 구성.
 const Author = new Schema({
-    id: String,
-    password: String,
+    id: {
+        type: String,
+        required: true,
+        uinque: true,
+    },
+    password: {
+        type: String,
+        required: true,
+        uinque: true,
+    },
     registed: {
         type: Date,
         default: Date.now,
@@ -19,20 +27,32 @@ const Author = new Schema({
 
 // Memo Schema : 메모 별 고유 id, 제목과 부가 설명으로 구성.
 const Memo = new Schema({
-    id: Number,
+    id: {
+        type: Number,
+        required: true,
+        unique: true,
+    },
     title: String,
     desc: String,
 });
 
 // Category Schema : 카테고리 이름과 하위 메모 목록으로 구성.
 const Category = new Schema({
-    name: String,
+    name: {
+        type: String,
+        required: true,
+        unique: true,
+    },
     memos: [Memo],
 });
 
 // MemoList Schema : 소유주 정보와 하위 카테고리 목록들로 구성.
 const MemoList = new Schema({
-    author: Author,
+    author: {
+        type: Author,
+        required: true,
+        unique: true,
+    },
     categories: [Category],
 });
 

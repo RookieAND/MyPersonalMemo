@@ -6,6 +6,7 @@ const Navbar = () => {
         <NavbarLayout>
             <LinkElement to='/'>Main</LinkElement>
             <LinkElement to='/login'>Login</LinkElement>
+            <LinkElement to='/register'>Register</LinkElement>
             <LinkElement to='/memo'>Memo</LinkElement>
         </NavbarLayout>
     );
