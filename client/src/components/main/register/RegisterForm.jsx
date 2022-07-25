@@ -1,8 +1,9 @@
 import styled, { css } from 'styled-components';
 import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { registerAccount } from 'api/registerAccount';
-import { RegisterFeedbackMsg } from 'constants/RegisterFeedbackMsg';
+import { RegisterFeedbackMsg } from 'constants/FeedbackMsg';
 
 const RegisterForm = () => {
     const feedbackMsg = useRef();
@@ -10,10 +11,11 @@ const RegisterForm = () => {
         id: '',
         pw: '',
     });
+    const { id, pw } = registerInput;
+    const navigate = useNavigate();
 
     const submitRegister = async (event) => {
         event.preventDefault();
-        const { id, pw } = registerInput;
 
         // ID 혹은 PW 둘 중 하나라도 입력하지 않았다면, 에러 메세지 출력
         if (id.length * pw.length === 0) {
@@ -32,12 +34,14 @@ const RegisterForm = () => {
 
         if (res.result === 'failure') {
             feedbackMsg.current.innerText = RegisterFeedbackMsg[res.errcode];
+            resetInput();
             return;
         }
 
         // 최종적으로 로그인에 성공했다면, 로그인 페이지로 유저를 이동시켜야 함.
         feedbackMsg.current.innerText = '정상적으로 가입 처리가 완료되었습니다.';
         resetInput();
+        setTimeout(() => navigate('/'), 750);
     };
 
     const insertInput = (event) => {
@@ -51,24 +55,18 @@ const RegisterForm = () => {
 
     return (
         <Wrapper>
-            <RegisterInput name='login-id'>
+            <RegisterInput>
                 <label htmlFor='id'>Username</label>
-                <input
-                    id='id'
-                    name='id'
-                    placeholder='등록할 ID를 입력해주세요.'
-                    onChange={insertInput}
-                    value={registerInput.id}
-                />
+                <input id='id' name='id' placeholder='등록할 ID를 입력해주세요.' onChange={insertInput} value={id} />
             </RegisterInput>
-            <RegisterInput name='login-id'>
+            <RegisterInput>
                 <label htmlFor='pw'>Password</label>
                 <input
                     id='pw'
                     name='pw'
                     placeholder='등록할 PW를 입력해주세요.'
                     onChange={insertInput}
-                    value={registerInput.pw}
+                    value={'*'.repeat(pw.length)}
                 />
             </RegisterInput>
             <RegisterFeedBack ref={feedbackMsg}>{RegisterFeedbackMsg['000']}</RegisterFeedBack>
@@ -115,9 +113,10 @@ const RegisterInput = styled.div`
                 border: 0px;
                 border-bottom: 1px solid ${colors.blue.secondary};
 
+                text-align: center;
+
                 &::placeholder {
                     color: ${colors.blue.tertiary};
-                    text-align: center;
                 }
             }
         `;

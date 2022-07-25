@@ -3,7 +3,7 @@ import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { loginAccount } from 'api/loginAccount.js';
-import { LoginFeedbackMsg } from 'constants/LoginFeedbackMsg';
+import { LoginFeedbackMsg } from 'constants/FeedbackMsg';
 
 const LoginForm = () => {
     const feedbackMsg = useRef();
@@ -11,15 +11,16 @@ const LoginForm = () => {
         id: '',
         pw: '',
     });
+    const { id, pw } = loginInput;
     const navigate = useNavigate();
 
     const submitLogin = async (event) => {
         event.preventDefault();
-        const { id, pw } = loginInput;
 
         // ID 혹은 PW 둘 중 하나라도 입력하지 않았다면, 에러 메세지 출력
         if (id.length * pw.length === 0) {
             feedbackMsg.current.innerText = LoginFeedbackMsg['002'];
+            resetInput();
             return;
         }
         const res = await loginAccount(id, pw);
@@ -27,11 +28,13 @@ const LoginForm = () => {
         // 만약 입력한 계정 정보가 존재하지 않는다면, 에러 메세지 출력
         if (res.status === 'fail') {
             feedbackMsg.current.innerText = LoginFeedbackMsg[res.errcode];
+            resetInput();
             return;
         }
 
         // 로그인에 성공했다면, 성공 메세지를 띄우고 0.75초 후 메인 화면으로 이동.
         feedbackMsg.current.innerText = LoginFeedbackMsg['000'];
+        resetInput();
         setTimeout(() => navigate('/'), 750);
     };
 
@@ -40,15 +43,25 @@ const LoginForm = () => {
         setLoginInput({ ...loginInput, [name]: value });
     };
 
+    const resetInput = () => {
+        setLoginInput({ id: '', pw: '' });
+    };
+
     return (
         <Wrapper>
-            <LoginInput name='login-id'>
+            <LoginInput>
                 <label htmlFor='id'>Username</label>
-                <input id='id' name='id' placeholder='ID를 입력해주세요.' onChange={insertInput} />
+                <input id='id' name='id' placeholder='ID를 입력해주세요.' onChange={insertInput} value={id} />
             </LoginInput>
-            <LoginInput name='login-id'>
+            <LoginInput>
                 <label htmlFor='pw'>Password</label>
-                <input id='pw' name='pw' placeholder='PW를 입력해주세요.' onChange={insertInput} />
+                <input
+                    id='pw'
+                    name='pw'
+                    placeholder='PW를 입력해주세요.'
+                    onChange={insertInput}
+                    value={'*'.repeat(pw.length)}
+                />
             </LoginInput>
             <LoginFeedBack ref={feedbackMsg}>ID / PW 를 입력해주세요.</LoginFeedBack>
             <LoginBtn onClick={submitLogin}>Login</LoginBtn>
@@ -94,9 +107,10 @@ const LoginInput = styled.div`
                 border: 0px;
                 border-bottom: 1px solid ${colors.blue.secondary};
 
+                text-align: center;
+
                 &::placeholder {
                     color: ${colors.blue.tertiary};
-                    text-align: center;
                 }
             }
         `;

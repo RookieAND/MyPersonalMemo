@@ -26,7 +26,7 @@ const MemoCategory = ({ category, memo }) => {
     };
 
     const createMemo = () => {
-        if (title.length > 0 && desc.length > 0) {
+        if (title.length * desc.length > 0) {
             dispatch({
                 type: 'CREATE_MEMO',
                 category,

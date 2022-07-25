@@ -12,7 +12,6 @@ const Memo = new Schema({
     id: {
         type: Number,
         required: true,
-        unique: true,
     },
     title: String,
     desc: String,
@@ -23,7 +22,6 @@ const Category = new Schema({
     name: {
         type: String,
         required: true,
-        unique: true,
     },
     memos: [Memo],
 });
@@ -37,6 +35,7 @@ const MemoList = new Schema({
         required: true,
         unique: true,
     },
+    // 기본 값을 빈 배열로 두도록 스키마 default 설정
     categories: [Category],
 });
 
