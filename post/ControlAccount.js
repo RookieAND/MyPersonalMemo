@@ -44,12 +44,28 @@ export const ControlAccount = {
             if (!isMatch) {
                 return res.json({ status: 'fail', errcode: '003' });
             }
-            // 해당 유저의 메모 정보를 로드한 후, 이를 클라이언트로 전송함.
-            const userMemo = await Memo.getUserMemos(userID);
-            console.log(userMemo);
-            return res.json({ status: 'success', data: userMemo.categories });
         } catch (error) {
             throw new Error(error);
         }
+
+        try {
+            // 해당 유저의 메모 정보를 로드한 후, 이를 클라이언트로 전송함.
+            const userMemo = await Memo.getUserMemos(userID);
+            // 해당 유저의 정보를 담은 JWT 토큰을 생성한 후, 쿠키에 담아 보냄.
+            const accessToken = await userInfo.applyToken();
+            res.cookie('access_token', accessToken, {
+                maxAge: 1000 * 60 * 60 * 24,
+                httpOnly: true,
+            });
+            return res.json({ status: 'success', data: userMemo.categories });
+        } catch (err) {
+            throw new Error(error);
+        }
+    },
+    // 로그아웃 관련 함수
+    logout: async (req, res) => {
+        // 로그아웃 진행 시 JWT 토큰을 제거하는 작업을 수행.
+        res.cookie('access_token', null, { maxAge: 0, httpOnly: true });
+        return res.json({ status: 'success' });
     },
 };

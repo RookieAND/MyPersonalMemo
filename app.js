@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
@@ -28,8 +29,10 @@ app.listen(port, () => {
 // CORS Header를 추가하여 CORS 통신을 가능하게 한다.
 // Web Application 간의 송신을 가능하게끔 열어주는 목적.
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
-// Express JSON 모듈을 사용하여 Body parse 진행.
+// Express에서 제공하는 body-parsor 미들웨어를 실행.
 app.use(express.json());
+// 외부 요청으로부터 Cookie를 가져오는 미들웨어 실행.
+app.use(cookieParser());
 
 // Router를 통해 DB API를 분리시켜 관리함.
 app.use('/memo', DBRouter);

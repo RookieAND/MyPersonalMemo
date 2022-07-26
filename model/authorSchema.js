@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
+import { generateToken } from '../api/createJwtToken';
+
 const { Schema, model } = mongoose;
 
 // Author Schema : id, password, 가입 일자로 구성.
@@ -40,6 +42,13 @@ AuthorSchema.methods.setPassword = async function (password) {
     const hashed = await bcrypt.hash(password, 10);
     this.password = hashed;
 };
+
+// 로그인에 성공할 경우, 해당 ID로 JWT 토큰을 발급하여 제공하는 메소드.
+AuthorSchema.methods.applyToken = function () {
+    const payload = { id: this.id, registed: this.registed };
+    return generateToken(payload, 'account');
+};
+
 // 특정 ID에 해당되는 Document를 찾아서 반환시켜주는 스태틱 메소드.
 AuthorSchema.statics.isUserExist = async function (id) {
     // exec() 함수를 붙여야 Promise 객체가 리턴됨.

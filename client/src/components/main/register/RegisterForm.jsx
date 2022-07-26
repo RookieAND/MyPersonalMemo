@@ -16,11 +16,11 @@ const RegisterForm = () => {
 
     const submitRegister = async (event) => {
         event.preventDefault();
+        resetInput();
 
         // ID 혹은 PW 둘 중 하나라도 입력하지 않았다면, 에러 메세지 출력
         if (id.length * pw.length === 0) {
             feedbackMsg.current.innerText = RegisterFeedbackMsg['002'];
-            resetInput();
             return;
         }
 
@@ -28,20 +28,18 @@ const RegisterForm = () => {
         let res;
         try {
             res = await registerAccount(id, pw);
+            // 로그인 과정에서 문제가 생겼을 경우, 에러 코드에 따른 피드백 메세지 제공
+            if (res.result === 'failure') {
+                feedbackMsg.current.innerText = RegisterFeedbackMsg[res.errcode];
+                return;
+            }
         } catch (err) {
             throw new Error(err);
         }
 
-        if (res.result === 'failure') {
-            feedbackMsg.current.innerText = RegisterFeedbackMsg[res.errcode];
-            resetInput();
-            return;
-        }
-
         // 최종적으로 로그인에 성공했다면, 로그인 페이지로 유저를 이동시켜야 함.
         feedbackMsg.current.innerText = '정상적으로 가입 처리가 완료되었습니다.';
-        resetInput();
-        setTimeout(() => navigate('/'), 750);
+        setTimeout(() => navigate('/login'), 750);
     };
 
     const insertInput = (event) => {

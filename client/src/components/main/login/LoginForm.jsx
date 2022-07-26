@@ -16,25 +16,27 @@ const LoginForm = () => {
 
     const submitLogin = async (event) => {
         event.preventDefault();
+        resetInput();
 
         // ID 혹은 PW 둘 중 하나라도 입력하지 않았다면, 에러 메세지 출력
         if (id.length * pw.length === 0) {
             feedbackMsg.current.innerText = LoginFeedbackMsg['002'];
-            resetInput();
             return;
         }
-        const res = await loginAccount(id, pw);
 
-        // 만약 입력한 계정 정보가 존재하지 않는다면, 에러 메세지 출력
-        if (res.status === 'fail') {
-            feedbackMsg.current.innerText = LoginFeedbackMsg[res.errcode];
-            resetInput();
-            return;
+        try {
+            const res = await loginAccount(id, pw);
+            // 만약 입력한 계정 정보가 존재하지 않는다면, 에러 메세지 출력
+            if (res.status === 'fail') {
+                feedbackMsg.current.innerText = LoginFeedbackMsg[res.errcode];
+                return;
+            }
+        } catch (err) {
+            throw new Error(err);
         }
 
         // 로그인에 성공했다면, 성공 메세지를 띄우고 0.75초 후 메인 화면으로 이동.
         feedbackMsg.current.innerText = LoginFeedbackMsg['000'];
-        resetInput();
         setTimeout(() => navigate('/'), 750);
     };
 
