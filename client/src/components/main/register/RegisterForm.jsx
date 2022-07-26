@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { registerAccount } from 'api/registerAccount';
+import { registerAccount } from 'api/account/registerAccount';
 import { RegisterFeedbackMsg } from 'constants/FeedbackMsg';
 
 const RegisterForm = () => {

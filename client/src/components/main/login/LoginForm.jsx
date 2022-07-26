@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { loginAccount } from 'api/loginAccount.js';
+import { loginAccount } from 'api/account/loginAccount.js';
 import { LoginFeedbackMsg } from 'constants/FeedbackMsg';
 
 const LoginForm = () => {

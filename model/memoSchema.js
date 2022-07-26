@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { Author } from './authorSchema.js';
 
 const { Schema, model } = mongoose;
 
@@ -33,12 +34,23 @@ const MemoListSchema = new Schema(
         author: {
             type: Schema.Types.ObjectId,
             ref: 'Author',
+            required: true,
             unique: true,
         },
         categories: [CategorySchema],
     },
-    { toJSON: { virtuals: true } }
+    {
+        // 해당 Schema 모델을 자동으로 JSON 변환시켜주는 옵션
+        toJSON: { virtuals: true },
+    }
 );
+
+// 특정 ID 의 유저가 보유한 메모 목록을 가져오는 스태틱 함수 선언.
+MemoListSchema.statics.getUserMemos = async function (userID) {
+    const memoAuthor = await Author.findOne({ id: userID }).exec();
+    const memoInfo = await this.findOne({ author: memoAuthor }).exec();
+    return memoInfo;
+};
 
 // 제작한 Schema 를 Model로 변환하여 사용하도록 설정.
 export const Memo = model('Memo', MemoListSchema);

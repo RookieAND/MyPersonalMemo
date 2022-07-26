@@ -6,10 +6,10 @@ export const ControlAccount = {
     // 회원가입 관련 함수 (유저, 메모 계정 생성)
     register: async (req, res) => {
         const { userID, userPW } = req.body;
+        // 먼저, 기존의 계정이 존재하는지를 체크해야 함. (ID만 체크)
         try {
-            // 먼저, 기존의 계정이 존재하는지를 체크해야 함. (ID만 체크)
-            const isExist = await Author.findByName(userID);
-            if (!isExist) {
+            const isExist = await Author.isUserExist(userID);
+            if (isExist) {
                 return res.status(400).json({ status: 'fail', errcode: '001' });
             }
 
@@ -20,14 +20,11 @@ export const ControlAccount = {
             await newAuthor.save();
 
             // 마지막으로 memo 관련 데이터를 생성하고, author 와 연동시킴.
-            const newMemo = new Memo({
+            const newMemo = await Memo.create({
                 author: newAuthor,
                 categories: [],
             });
-            await newMemo.save();
-
-            return res.json({ result: 'success', data: newMemo });
-            // 기존의 계정 정보가 없을 경우, MongoDB에 새로운 계정 정보를 추가함.
+            return res.json({ result: 'success', data: newMemo.categories });
         } catch (error) {
             console.log(error);
             return res.json({ result: 'failure', errcode: '003' });
@@ -37,18 +34,22 @@ export const ControlAccount = {
     login: async (req, res) => {
         const { userID, userPW } = req.body;
         try {
-            const isExist = await Author.findByName(userID);
-            if (!isExist) {
-                return res.status(400).json({ status: 'fail', errcode: '001' });
+            // 만약 계정 정보가 존재하지 않을 경우 (null) 에러 코드 전송;
+            const userInfo = await Author.isUserExist(userID);
+            if (!userInfo) {
+                return res.json({ status: 'fail', errcode: '001' });
             }
+            // 입력한 비밀번호가 일치하는지를 확인하고, 이에 대한 결과를 확인.
+            const isMatch = await userInfo.checkPassword(userPW);
+            if (!isMatch) {
+                return res.json({ status: 'fail', errcode: '003' });
+            }
+            // 해당 유저의 메모 정보를 로드한 후, 이를 클라이언트로 전송함.
+            const userMemo = await Memo.getUserMemos(userID);
+            console.log(userMemo);
+            return res.json({ status: 'success', data: userMemo.categories });
         } catch (error) {
             throw new Error(error);
         }
-        // 만약 계정 정보가 존재하지 않을 경우 (null) 에러 코드 전송;
-        if (!userDocs) {
-            return res.json({ status: 'fail', errcode: '001' });
-        }
-        const userMemo = await memoModel.findOne({ author: userDocs });
-        return res.json({ status: 'success' });
     },
 };

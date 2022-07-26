@@ -27,7 +27,7 @@ app.listen(port, () => {
 
 // CORS Header를 추가하여 CORS 통신을 가능하게 한다.
 // Web Application 간의 송신을 가능하게끔 열어주는 목적.
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 // Express JSON 모듈을 사용하여 Body parse 진행.
 app.use(express.json());
 
