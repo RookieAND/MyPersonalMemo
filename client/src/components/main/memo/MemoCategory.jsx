@@ -239,7 +239,7 @@ const RemoveCategoryBtn = styled.div`
 
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: center;1
 
             background-color: ${colors.blue.tertiary};
             cursor: pointer;

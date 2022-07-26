@@ -66,7 +66,8 @@ const RegisterForm = () => {
                     name='pw'
                     placeholder='등록할 PW를 입력해주세요.'
                     onChange={insertInput}
-                    value={'*'.repeat(pw.length)}
+                    value={pw}
+                    type='Password'
                 />
             </RegisterInput>
             <RegisterFeedBack ref={feedbackMsg}>{RegisterFeedbackMsg['000']}</RegisterFeedBack>

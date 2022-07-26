@@ -60,7 +60,8 @@ const LoginForm = () => {
                     name='pw'
                     placeholder='PW를 입력해주세요.'
                     onChange={insertInput}
-                    value={'*'.repeat(pw.length)}
+                    value={pw}
+                    type='Password'
                 />
             </LoginInput>
             <LoginFeedBack ref={feedbackMsg}>ID / PW 를 입력해주세요.</LoginFeedBack>
