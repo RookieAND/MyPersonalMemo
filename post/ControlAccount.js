@@ -24,6 +24,13 @@ export const ControlAccount = {
                 author: newAuthor,
                 categories: [],
             });
+
+            // 해당 유저의 정보를 담은 JWT 토큰을 생성한 후, 쿠키에 담아 보냄.
+            const accessToken = await newAuthor.applyToken();
+            res.cookie('access_token', accessToken, {
+                maxAge: 1000 * 60 * 60 * 24,
+                httpOnly: true,
+            });
             return res.json({ result: 'success', data: newMemo.categories });
         } catch (error) {
             console.log(error);
@@ -44,11 +51,6 @@ export const ControlAccount = {
             if (!isMatch) {
                 return res.json({ status: 'fail', errcode: '003' });
             }
-        } catch (error) {
-            throw new Error(error);
-        }
-
-        try {
             // 해당 유저의 메모 정보를 로드한 후, 이를 클라이언트로 전송함.
             const userMemo = await Memo.getUserMemos(userID);
             // 해당 유저의 정보를 담은 JWT 토큰을 생성한 후, 쿠키에 담아 보냄.
@@ -58,7 +60,7 @@ export const ControlAccount = {
                 httpOnly: true,
             });
             return res.json({ status: 'success', data: userMemo.categories });
-        } catch (err) {
+        } catch (error) {
             throw new Error(error);
         }
     },

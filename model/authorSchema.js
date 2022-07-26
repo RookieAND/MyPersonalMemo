@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
-import { generateToken } from '../api/createJwtToken';
+import { generateToken } from '../api/createJwtToken.js';
 
 const { Schema, model } = mongoose;
 

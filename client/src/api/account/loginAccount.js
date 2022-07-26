@@ -8,7 +8,6 @@ export const loginAccount = async (userID, userPW) => {
             url: '/account/login',
             data: { userID, userPW },
         });
-        console.log(response);
         return response;
     } catch (err) {
         throw new Error(err);
