@@ -11,8 +11,9 @@ export const registerAccount = async (userID, userPW) => {
                 userPW,
             },
         });
+        console.log(response);
+        return response;
     } catch (err) {
         throw new Error(err);
     }
-    return response;
 };

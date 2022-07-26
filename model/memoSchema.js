@@ -8,7 +8,7 @@ const { Schema, model } = mongoose;
 */
 
 // Memo Schema : 메모 별 고유 id, 제목과 부가 설명으로 구성.
-const Memo = new Schema({
+const MemoSchema = new Schema({
     id: {
         type: Number,
         required: true,
@@ -18,27 +18,27 @@ const Memo = new Schema({
 });
 
 // Category Schema : 카테고리 이름과 하위 메모 목록으로 구성.
-const Category = new Schema({
+const CategorySchema = new Schema({
     name: {
         type: String,
         required: true,
     },
-    memos: [Memo],
+    memos: [MemoSchema],
 });
 
 // MemoList Schema : 소유주 정보와 하위 카테고리 목록들로 구성.
 // 소유주 정보인 author의 경우, 레퍼런스로 Author 스키마를 사용.
-const MemoList = new Schema(
+const MemoListSchema = new Schema(
     {
         author: {
             type: Schema.Types.ObjectId,
             ref: 'Author',
             unique: true,
         },
-        categories: [Category],
+        categories: [CategorySchema],
     },
     { toJSON: { virtuals: true } }
 );
 
 // 제작한 Schema 를 Model로 변환하여 사용하도록 설정.
-export const memoModel = model('Memo', MemoList);
+export const Memo = model('Memo', MemoListSchema);

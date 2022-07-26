@@ -5,6 +5,7 @@ import axios from 'axios';
 const axiosInstance = axios.create({
     baseURL: 'http://localhost:5000',
     timeout: 3000,
+    withCredentials: true,
 });
 
 // 인터셉터 설정을 통해 HTTP 응답 관련 작업 모듈화.

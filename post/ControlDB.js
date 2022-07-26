@@ -1,10 +1,10 @@
-import { memoModel } from '../model/memoSchema.js';
+import { Memo } from '../model/memoSchema.js';
 
 // MongoDB 에서 요구하는 작업을 이곳에서 수행.
 export const createUserMemo = async (req, res) => {
     try {
         const { userID, userPW } = req.body;
-        const post = await memoModel.create({
+        const post = await Memo.create({
             author: { id: userID, password: userPW },
             categories: [],
         });

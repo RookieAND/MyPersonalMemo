@@ -6,10 +6,7 @@ export const loginAccount = async (userID, userPW) => {
         response = await axiosInstance({
             method: 'POST',
             url: '/account/login',
-            data: {
-                userID,
-                userPW,
-            },
+            data: { userID, userPW },
         });
     } catch (err) {
         throw new Error(err);
