@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
-import { generateToken } from '../api/createJwtToken.js';
+import { jwtUtil } from '../api/jwtCreateToken.js';
 
 const { Schema, model } = mongoose;
 
@@ -46,7 +46,9 @@ AuthorSchema.methods.setPassword = async function (password) {
 // 로그인에 성공할 경우, 해당 ID로 JWT 토큰을 발급하여 제공하는 메소드.
 AuthorSchema.methods.applyToken = function () {
     const payload = { id: this.id, registed: this.registed };
-    return generateToken(payload, 'account');
+    const accessToken = jwtUtil.generateToken(payload);
+    const refreshToken = jwtUtil.generateRefreshToken(payload);
+    return { accessToken, refreshToken };
 };
 
 // 특정 ID에 해당되는 Document를 찾아서 반환시켜주는 스태틱 메소드.

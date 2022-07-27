@@ -25,13 +25,14 @@ export const ControlAccount = {
                 categories: [],
             });
 
-            // 해당 유저의 정보를 담은 JWT 토큰을 생성한 후, 쿠키에 담아 보냄.
-            const accessToken = await newAuthor.applyToken();
-            res.cookie('access_token', accessToken, {
-                maxAge: 1000 * 60 * 60 * 24,
+            // 해당 유저의 정보를 담은 JWT 토큰을 생성한 후, refresh 토큰은 쿠키에 담아 보냄.
+            const { accessToken, refreshToken } = await newAuthor.applyToken();
+            res.cookie('refresh_token', refreshToken, {
+                maxAge: 1000 * 60 * 60 * 24 * 7,
                 httpOnly: true,
             });
-            return res.json({ result: 'success', data: newMemo.categories });
+            console.log({ result: 'success', token: accessToken, data: newMemo.categories });
+            return res.json({ result: 'success', token: accessToken, data: newMemo.categories });
         } catch (error) {
             console.log(error);
             return res.json({ result: 'failure', errcode: '003' });
@@ -54,12 +55,13 @@ export const ControlAccount = {
             // 해당 유저의 메모 정보를 로드한 후, 이를 클라이언트로 전송함.
             const userMemo = await Memo.getUserMemos(userID);
             // 해당 유저의 정보를 담은 JWT 토큰을 생성한 후, 쿠키에 담아 보냄.
-            const accessToken = await userInfo.applyToken();
-            res.cookie('access_token', accessToken, {
-                maxAge: 1000 * 60 * 60 * 24,
+            const { accessToken, refreshToken } = await userInfo.applyToken();
+            res.cookie('refresh_token', refreshToken, {
+                maxAge: 1000 * 60 * 60 * 24 * 7,
                 httpOnly: true,
             });
-            return res.json({ status: 'success', data: userMemo.categories });
+            console.log({ result: 'success', token: accessToken, data: userMemo.categories });
+            return res.json({ result: 'success', token: accessToken, data: userMemo.categories });
         } catch (error) {
             throw new Error(error);
         }

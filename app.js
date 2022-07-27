@@ -9,7 +9,7 @@ import mongoose from 'mongoose';
 import DBRouter from './api/DBRouter.js';
 import AccountRouter from './api/AccountRouter.js';
 
-import { jwtRefreshToken } from './api/createJwtToken.js';
+import { jwtRefreshToken } from './api/jwtRefreshToken.js';
 
 dotenv.config({ encoding: 'utf8' });
 

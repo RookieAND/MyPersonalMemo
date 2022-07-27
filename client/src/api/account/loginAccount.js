@@ -9,6 +9,7 @@ export const loginAccount = async (userID, userPW) => {
             data: { userID, userPW },
         });
         return response;
+        console.log(response);
     } catch (err) {
         throw new Error(err);
     }

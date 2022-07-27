@@ -1,6 +1,8 @@
 import styled, { css } from 'styled-components';
-import { useState, useRef } from 'react';
+import { useState, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { AuthDispatch } from 'pages/MainPage';
 
 import { loginAccount } from 'api/account/loginAccount.js';
 import { LoginFeedbackMsg } from 'constants/FeedbackMsg';
@@ -13,6 +15,7 @@ const LoginForm = () => {
     });
     const { id, pw } = loginInput;
     const navigate = useNavigate();
+    const dispatch = useContext(AuthDispatch);
 
     const submitLogin = async (event) => {
         event.preventDefault();
@@ -31,13 +34,17 @@ const LoginForm = () => {
                 feedbackMsg.current.innerText = LoginFeedbackMsg[res.errcode];
                 return;
             }
+            // 로그인에 성공했다면, 성공 메세지를 띄우고 0.75초 후 메인 화면으로 이동.
+            dispatch({
+                type: 'SET_TOKEN',
+                token: res.token,
+                authenticated: true,
+            });
+            feedbackMsg.current.innerText = LoginFeedbackMsg['000'];
+            setTimeout(() => navigate('/'), 750);
         } catch (err) {
             throw new Error(err);
         }
-
-        // 로그인에 성공했다면, 성공 메세지를 띄우고 0.75초 후 메인 화면으로 이동.
-        feedbackMsg.current.innerText = LoginFeedbackMsg['000'];
-        setTimeout(() => navigate('/'), 750);
     };
 
     const insertInput = (event) => {
