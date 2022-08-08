@@ -8,7 +8,7 @@ import { MemoDispatch } from 'pages/Container/MemoContainer';
 import MemoElement from 'components/main/memo/MemoElement';
 
 const MemoCategory = ({ category, memo }) => {
-    const dispatch = useContext(MemoDispatch);
+    const memoDispatch = useContext(MemoDispatch);
 
     const [isAddingMemo, setAddingMemo] = useState(false);
     const [addMemo, setAddMemo] = useState({
@@ -19,7 +19,7 @@ const MemoCategory = ({ category, memo }) => {
     const { title, desc } = addMemo;
 
     const removeCategory = () => {
-        dispatch({
+        memoDispatch({
             type: 'REMOVE_CATEGORY',
             category,
         });
@@ -27,7 +27,7 @@ const MemoCategory = ({ category, memo }) => {
 
     const createMemo = () => {
         if (title.length * desc.length > 0) {
-            dispatch({
+            memoDispatch({
                 type: 'CREATE_MEMO',
                 category,
                 newMemo: {

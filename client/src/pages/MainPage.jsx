@@ -1,59 +1,53 @@
-import React, { useReducer } from 'react';
-
-import BaseTemplate from '../components/template/BaseTemplate';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 
-import { HomeContainer } from './Container/HomeContainer';
-import { MemoContainer } from './Container/MemoContainer';
-import { LoginContainer } from './Container/LoginContainer';
-import { RegisterContainer } from './Container/RegisterContainer';
-
-// JWT 토큰 인증을 통한 로그인 여부를 파악하는 reducer / state 선언.
-export const AuthDispatch = React.createContext(null);
-
-const initialState = { token: null, authenticated: false };
-const reducer = (state, action) => {
-    switch (action.type) {
-        case 'SET_TOKEN':
-            return { ...state, token: action.token, authenticated: action.result };
-        case 'DELETE_TOKEN':
-            return { ...state, token: null, authenticated: false };
-        default:
-            return state;
-    }
-};
+import BaseTemplate from 'components/template/BaseTemplate';
+import { HomeContainer } from 'pages/Container/HomeContainer';
+import { MemoContainer } from 'pages/Container/MemoContainer';
+import { LoginContainer } from 'pages/Container/LoginContainer';
+import { RegisterContainer } from 'pages/Container/RegisterContainer';
+import { AuthState } from 'module/Auth';
 
 // 로그인을 한 경우에만 접근을 허용하도록 하는 Route
-const PrivateRoute = ({ isLogin }) => {
+const PrivateRoute = () => {
+    const authInfo = useRecoilValue(AuthState);
+    const isLogin = authInfo.authenticated;
     return isLogin ? <Outlet /> : <Navigate to={'/'} replace />;
 };
 
 // 로그인을 하지 않았을 경우에만 접근을 허용하도록 하는 Route
-const RestrictedRoute = ({ isLogin }) => {
+const RestrictedRoute = () => {
+    const authInfo = useRecoilValue(AuthState);
+    const isLogin = authInfo.authenticated;
     return isLogin ? <Navigate to={'/'} replace /> : <Outlet />;
 };
 
 const MainPage = () => {
-    const [state, dispatch] = useReducer(reducer, initialState);
-    const isLogin = state.authenticated;
+    const setAuthInfo = useSetRecoilState(AuthState);
+
+    useEffect(() => {
+        const accessToken = localStorage.getItem('access_token');
+        if (accessToken) {
+            setAuthInfo({ token: accessToken, authenticated: true });
+        }
+    });
 
     return (
-        <AuthDispatch.Provider value={dispatch}>
-            <BrowserRouter>
-                <BaseTemplate>
-                    <Routes>
-                        <Route path='/' element={<HomeContainer />} />
-                        <Route element={<RestrictedRoute />} isLogin={isLogin}>
-                            <Route path='/login' element={<LoginContainer />} />
-                            <Route path='/register' element={<RegisterContainer />} />
-                        </Route>
-                        <Route element={<PrivateRoute />} isLogin={isLogin}>
-                            <Route path='/memo/*' element={<MemoContainer />} />
-                        </Route>
-                    </Routes>
-                </BaseTemplate>
-            </BrowserRouter>
-        </AuthDispatch.Provider>
+        <BrowserRouter>
+            <BaseTemplate>
+                <Routes>
+                    <Route path='/' element={<HomeContainer />} />
+                    <Route element={<RestrictedRoute />}>
+                        <Route path='/login' element={<LoginContainer />} />
+                        <Route path='/register' element={<RegisterContainer />} />
+                    </Route>
+                    <Route element={<PrivateRoute />}>
+                        <Route path='/memo/*' element={<MemoContainer />} />
+                    </Route>
+                </Routes>
+            </BaseTemplate>
+        </BrowserRouter>
     );
 };
 

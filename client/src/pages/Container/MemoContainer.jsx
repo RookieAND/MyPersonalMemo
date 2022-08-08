@@ -59,10 +59,10 @@ const reducer = (state, action) => {
 };
 
 export const MemoContainer = () => {
-    const [state, dispatch] = useReducer(reducer, ExampleMemo);
+    const [state, memoDispatch] = useReducer(reducer, ExampleMemo);
 
     return (
-        <MemoDispatch.Provider value={dispatch}>
+        <MemoDispatch.Provider value={memoDispatch}>
             <Memo mainMemo={state} />
         </MemoDispatch.Provider>
     );

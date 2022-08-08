@@ -1,11 +1,11 @@
 import styled, { css } from 'styled-components';
-import { useState, useRef, useContext } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 
-import { AuthDispatch } from 'pages/MainPage';
-
-import { loginAccount } from 'api/account/loginAccount.js';
+import { accountControl } from 'api/accountControl.js';
 import { LoginFeedbackMsg } from 'constants/FeedbackMsg';
+import { AuthState } from 'module/Auth';
 
 const LoginForm = () => {
     const feedbackMsg = useRef();
@@ -15,7 +15,7 @@ const LoginForm = () => {
     });
     const { id, pw } = loginInput;
     const navigate = useNavigate();
-    const dispatch = useContext(AuthDispatch);
+    const setAuthInfo = useSetRecoilState(AuthState);
 
     const submitLogin = async (event) => {
         event.preventDefault();
@@ -28,22 +28,13 @@ const LoginForm = () => {
         }
 
         try {
-            const res = await loginAccount(id, pw);
-            // 만약 입력한 계정 정보가 존재하지 않는다면, 에러 메세지 출력
-            if (res.status === 'fail') {
-                feedbackMsg.current.innerText = LoginFeedbackMsg[res.errcode];
-                return;
-            }
             // 로그인에 성공했다면, 성공 메세지를 띄우고 0.75초 후 메인 화면으로 이동.
-            dispatch({
-                type: 'SET_TOKEN',
-                token: res.token,
-                authenticated: true,
-            });
+            const res = await accountControl.loginAccount(id, pw);
+            setAuthInfo({ token: res.token, authenticated: true });
             feedbackMsg.current.innerText = LoginFeedbackMsg['000'];
             setTimeout(() => navigate('/'), 750);
         } catch (err) {
-            throw new Error(err);
+            feedbackMsg.current.innerText = LoginFeedbackMsg[err.message];
         }
     };
 

@@ -1,13 +1,29 @@
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+
+import { AuthState } from 'module/Auth';
+import { accountControl } from 'api/accountControl';
 
 const Navbar = () => {
+    const authInfo = useRecoilValue(AuthState);
+    const isLogin = authInfo.authenticated;
     return (
         <NavbarLayout>
             <LinkElement to='/'>Main</LinkElement>
-            <LinkElement to='/login'>Login</LinkElement>
-            <LinkElement to='/register'>Register</LinkElement>
-            <LinkElement to='/memo'>Memo</LinkElement>
+            {!isLogin ? (
+                <>
+                    <LinkElement to='/login'>Login</LinkElement>
+                    <LinkElement to='/register'>Register</LinkElement>
+                </>
+            ) : (
+                <>
+                    <LinkElement to='/memo'>Memo</LinkElement>
+                    <LinkElement to='/' onClick={accountControl.logoutAccount}>
+                        Logout
+                    </LinkElement>
+                </>
+            )}
         </NavbarLayout>
     );
 };

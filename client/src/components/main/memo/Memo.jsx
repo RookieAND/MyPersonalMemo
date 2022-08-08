@@ -27,7 +27,7 @@ const Memo = ({ mainMemo }) => {
         memoCarousel.current.style.transform = `translateX(-${26.25 * currentSlide}vw)`;
     }, [currentSlide]);
 
-    const dispatch = useContext(MemoDispatch);
+    const memoDispatch = useContext(MemoDispatch);
 
     // 카테고리를 새롭게 생성하기 위한 함수.
     const createCategory = () => {
@@ -44,7 +44,7 @@ const Memo = ({ mainMemo }) => {
             return;
         }
 
-        dispatch({
+        memoDispatch({
             type: 'CREATE_CATEGORY',
             content: {
                 category: input,
