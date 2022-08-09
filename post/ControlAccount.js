@@ -51,8 +51,8 @@ export const ControlAccount = {
                 return res.status(401).json({ result: false, errcode: '003' });
             }
             // 해당 유저의 메모 정보를 로드한 후, 이를 클라이언트로 전송함.
-            const userMemo = await Memo.getUserMemos(userID);
             // 해당 유저의 정보를 담은 JWT 토큰을 생성한 후, 쿠키에 담아 보냄.
+            const userMemo = await Memo.getUserMemos(userID);
             const { accessToken, refreshToken } = await userInfo.applyToken();
             res.cookie('refresh_token', refreshToken, {
                 maxAge: 1000 * 60 * 60 * 24 * 7,
@@ -63,10 +63,9 @@ export const ControlAccount = {
             throw new Error(error);
         }
     },
-    // 로그아웃 관련 함수
+    // 로그아웃 진행 시 JWT 토큰을 제거하는 작업을 수행.
     logout: async (req, res) => {
-        // 로그아웃 진행 시 JWT 토큰을 제거하는 작업을 수행.
         res.cookie('access_token', null, { maxAge: 0, httpOnly: true });
-        return res.status(200).json({ result: true });
+        return res.status(200).json({ result: true, message: '' });
     },
 };

@@ -26,3 +26,12 @@ export const shakeText = keyframes`
     transform: translateX(0px);
   }
 `;
+
+export const modalBgShow = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  } 
+`;
