@@ -32,7 +32,7 @@ app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(express.json());
 // 외부 요청으로부터 Cookie를 가져오는 미들웨어 실행.
 app.use(cookieParser());
-// 요청에서 온 Cookie를 확인하고, JWT 토큰이 있는지를 판별하는 미들웨어 실행.
+// 요청에서 온 Header 및 Cookie를 확인하고, JWT 토큰이 있는지를 판별하는 미들웨어 실행.
 app.use(jwtRefreshToken);
 
 // Router를 통해 DB API를 분리시켜 관리함.

@@ -14,7 +14,12 @@ export const jwtUtil = {
     generateRefreshToken: (payload) => {
         return jwt.sign(payload, SECRET_KEY, { expiresIn: '7d' });
     },
-    decodeToken: (token) => {
-        return jwt.verify(token, SECRET_KEY);
+    verifyToken: (token) => {
+        try {
+            const decoded = jwt.verify(token, SECRET_KEY);
+            return decoded;
+        } catch (err) {
+            return null;
+        }
     },
 };

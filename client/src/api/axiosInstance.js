@@ -14,6 +14,14 @@ const axiosInstance = axios.create({
 // 1. 요청 인터셉터 설정 (요청 성공 / 실패)
 axiosInstance.interceptors.request.use(
     (config) => {
+        // accessToken 이 localStorage에 존재할 경우, Header 추가 설정 (JWT)
+        const accessToken = localStorage.getItem('access_token');
+        if (accessToken) {
+            config.headers = {
+                ...config.headers,
+                Authorization: `Bearer ${accessToken}`,
+            };
+        }
         return config;
     },
     (error) => {
@@ -31,6 +39,10 @@ axiosInstance.interceptors.response.use(
     },
     // 응답 실패 시 Promise Error 객체를 return 하도록 설정.
     (error) => {
+        // 만약 Access_token이 만료되어 생긴 문제라면, refresh_token을 재전송 해야 함
+        if (error.response?.data.errorCode === 460) {
+            return;
+        }
         console.log(error);
         return Promise.reject(error);
     }
