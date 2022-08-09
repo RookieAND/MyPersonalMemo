@@ -6,8 +6,8 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
-import DBRouter from './api/DBRouter.js';
-import AccountRouter from './api/AccountRouter.js';
+import DBRouter from './router/DBRouter.js';
+import AccountRouter from './router/AccountRouter.js';
 
 import { jwtRefreshToken } from './api/jwtRefreshToken.js';
 

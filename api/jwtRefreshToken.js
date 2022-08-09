@@ -1,4 +1,4 @@
-import { jwtUtil } from './jwtCreateToken.js';
+import { jwtUtil } from './jwtUtil.js';
 
 // refreshToken이 쿠키에 존재한다면, 토큰을 해석하는 Express 미들웨어 제작
 export const jwtRefreshToken = (res, req, next) => {

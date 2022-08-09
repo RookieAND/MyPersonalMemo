@@ -29,7 +29,7 @@ const LoginForm = () => {
 
         try {
             // 로그인에 성공했다면, 성공 메세지를 띄우고 0.75초 후 메인 화면으로 이동.
-            const res = await accountControl.loginAccount(id, pw);
+            const res = await accountControl.login(id, pw);
             setAuthInfo({ token: res.token, authenticated: true });
             feedbackMsg.current.innerText = LoginFeedbackMsg['000'];
             setTimeout(() => navigate('/'), 750);

@@ -19,7 +19,7 @@ const Navbar = () => {
             ) : (
                 <>
                     <LinkElement to='/memo'>Memo</LinkElement>
-                    <LinkElement to='/' onClick={accountControl.logoutAccount}>
+                    <LinkElement to='/' onClick={accountControl.logout}>
                         Logout
                     </LinkElement>
                 </>

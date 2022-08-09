@@ -26,7 +26,7 @@ const RegisterForm = () => {
 
         // 만약 입력한 계정 정보가 존재하지 않는다면, 에러 메세지 출력
         try {
-            await accountControl.registerAccount(id, pw);
+            await accountControl.register(id, pw);
             // 로그인 과정에서 문제가 생겼을 경우, 에러 코드에 따른 피드백 메세지 제공
             // 최종적으로 로그인에 성공했다면, 로그인 페이지로 유저를 이동시켜야 함.
             feedbackMsg.current.innerText = '정상적으로 가입 처리가 완료되었습니다.';

@@ -1,7 +1,7 @@
 import axiosInstance from 'api/axiosInstance';
 
 export const accountControl = {
-    loginAccount: async (userID, userPW) => {
+    login: async (userID, userPW) => {
         let response;
         try {
             response = await axiosInstance({
@@ -16,7 +16,7 @@ export const accountControl = {
             throw new Error(errCode);
         }
     },
-    registerAccount: async (userID, userPW) => {
+    register: async (userID, userPW) => {
         let response;
         try {
             response = await axiosInstance({
@@ -34,7 +34,7 @@ export const accountControl = {
             throw new Error(errCode);
         }
     },
-    logoutAccount: async () => {
+    logout: async () => {
         try {
             await axiosInstance({
                 method: 'GET',
