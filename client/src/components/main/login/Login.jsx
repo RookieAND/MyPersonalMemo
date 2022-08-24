@@ -1,72 +1,75 @@
 import styled, { css } from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
-import Title from 'components/common/Title';
 import LoginForm from 'components/main/login/LoginForm';
+import useModal from 'hooks/useModal';
 
 const Login = () => {
+    const { closeModal } = useModal();
     return (
         <Wrapper>
-            <Title>
+            <ModalHeader>
                 <h5>Login Account</h5>
-                <p>나의 메모 계정 로그인</p>
-            </Title>
-            <LoginSection>
-                <LoginInformation>
-                    <h5>Welcome To My Memo!</h5>
-                    <p>나만의 메모에 오신 것을 환영합니다!</p>
-                </LoginInformation>
-                <LoginForm />
-            </LoginSection>
+                <ModalCloseBtn icon={faXmark} onClick={closeModal} />
+            </ModalHeader>
+            <LoginForm />
+            <RegisterBtn>회원가입</RegisterBtn>
         </Wrapper>
     );
 };
 
 const Wrapper = styled.div`
-    width: 100vw;
-    min-height: 100vh;
+    width: 25vw;
 
-    background-color: #f2faff;
+    margin: auto;
+    background-color: #ffffff;
 `;
 
-const LoginSection = styled.div`
+const ModalHeader = styled.header`
     ${({ theme }) => {
-        const { colors } = theme;
+        const { colors, fonts, paddings } = theme;
         return css`
-            width: 75%;
-            height: 75%;
+            width: 100%;
+            padding: ${paddings.base} ${paddings.base};
 
-            margin: auto;
-            background-color: ${colors.white};
-            border-radius: 25px;
+            background-color: ${colors.blue.secondary};
+            border-radius: 10px 10px 0px 0px;
+            color: ${colors.white};
 
             display: flex;
+            justify-content: space-between;
+
+            h5 {
+                font-size: ${fonts.size.sm};
+            }
         `;
     }}
 `;
 
-const LoginInformation = styled.div`
+const ModalCloseBtn = styled(FontAwesomeIcon)`
     ${({ theme }) => {
         const { colors, fonts } = theme;
         return css`
-            width: 50%;
-            height: 100%;
+            color: ${colors.white};
+            font-size: ${fonts.size.base};
+        `;
+    }}
+`;
+
+const RegisterBtn = styled.button`
+    ${({ theme }) => {
+        const { colors, fonts, paddings } = theme;
+        return css`
+            width: 100%;
+            margin: 0vw;
+            padding: ${paddings.sm} 0vw;
 
             background-color: ${colors.blue.secondary};
-            border-radius: 25px 0px 0px 25px;
 
             text-align: center;
-
-            h5 {
-                color: ${colors.white};
-                font-family: ${fonts.family.detail};
-                font-size: ${fonts.size.xxl};
-            }
-
-            p {
-                color: ${colors.white};
-                font-size: ${fonts.size.sm};
-                font-weight: 100;
-            }
+            color: ${colors.white};
+            font-size: ${fonts.size.sm};
         `;
     }}
 `;

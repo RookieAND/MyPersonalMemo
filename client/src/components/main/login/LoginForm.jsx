@@ -49,78 +49,56 @@ const LoginForm = () => {
 
     return (
         <Wrapper>
-            <LoginInput>
-                <label htmlFor='id'>Username</label>
-                <input id='id' name='id' placeholder='ID를 입력해주세요.' onChange={insertInput} value={id} />
-            </LoginInput>
-            <LoginInput>
-                <label htmlFor='pw'>Password</label>
-                <input
-                    id='pw'
+            <div className='input-wrap'>
+                <LoginInput name='id' placeholder='Enter your ID' onChange={insertInput} value={id} />
+                <LoginInput
                     name='pw'
-                    placeholder='PW를 입력해주세요.'
+                    placeholder='Enter your Password'
                     onChange={insertInput}
                     value={pw}
                     type='Password'
                 />
-            </LoginInput>
-            <LoginFeedBack ref={feedbackMsg}>ID / PW 를 입력해주세요.</LoginFeedBack>
-            <LoginBtn onClick={submitLogin}>Login</LoginBtn>
+                <LoginFeedBack ref={feedbackMsg}>ID / PW 를 입력해주세요.</LoginFeedBack>
+            </div>
+            <LoginBtn onClick={submitLogin}>로그인</LoginBtn>
         </Wrapper>
     );
 };
 
 const Wrapper = styled.form`
-    ${({ theme }) => {
-        const { colors } = theme;
-        return css`
-            width: 50%;
-            height: 100%;
+    width: 100%;
+    text-align: center;
 
-            background-color: ${colors.white};
-            border-radius: 0px 25px 25px 0px;
-
-            text-align: center;
-        `;
-    }}
+    .input-wrap {
+        padding: 3vw 0vw;
+    }
 `;
 
-const LoginInput = styled.div`
+const LoginInput = styled.input`
     ${({ theme }) => {
-        const { colors, fonts, margins } = theme;
+        const { colors, paddings, margins } = theme;
         return css`
+            width: 60%;
+            padding: ${paddings.sm};
             margin: ${margins.base} auto;
 
-            label {
-                width: 100%;
-                margin: auto;
-                display: block;
+            border: 0px;
+            border-bottom: 1px solid ${colors.blue.secondary};
 
-                color: ${colors.blue.secondary};
-                font-family: ${fonts.family.detail};
-                font-size: ${fonts.size.sm};
-            }
+            text-align: center;
 
-            input {
-                width: 70%;
-                margin: ${margins.sm} auto;
-
-                border: 0px;
-                border-bottom: 1px solid ${colors.blue.secondary};
-
-                text-align: center;
-
-                &::placeholder {
-                    color: ${colors.blue.tertiary};
-                }
+            &::placeholder {
+                color: ${colors.blue.tertiary};
+                font-weight: 100;
             }
         `;
     }}
 `;
 const LoginFeedBack = styled.p`
     ${({ theme }) => {
-        const { colors, fonts } = theme;
+        const { colors, fonts, margins } = theme;
         return css`
+            margin: ${margins.sm};
             text-align: center;
 
             color: ${colors.blue.secondary};
@@ -132,18 +110,17 @@ const LoginFeedBack = styled.p`
 
 const LoginBtn = styled.button`
     ${({ theme }) => {
-        const { colors, fonts, margins, paddings } = theme;
+        const { colors, fonts, paddings } = theme;
         return css`
-            width: 30%;
-            margin: ${margins.base} 0vw;
+            width: 100%;
+            margin: 0;
             padding: ${paddings.sm} 0vw;
 
             background-color: ${colors.blue.tertiary};
-            border-radius: 10px;
 
             text-align: center;
             color: ${colors.white};
-            font-size: ${fonts.size.base};
+            font-size: ${fonts.size.sm};
         `;
     }}
 `;
